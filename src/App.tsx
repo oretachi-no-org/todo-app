@@ -14,27 +14,94 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
+/* Written by Rishvic Pushpakaran. */
+
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+
+import TaskItem from "./TaskItem";
+import { makeStyles } from "@material-ui/core";
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © Rishvic Pushpakaran 2020."}
+      <br />
+      {"To get a copy of the source code, "}
+      <Link color="inherit" href="https://github.com/oretachi-no-org/todo-app">
+        click here
+      </Link>
+      {"."}
+      <br />
+      {"Icons made by "}
+      <Link color="inherit" href="https://www.flaticon.com/authors/freepik">
+        Freepik
+      </Link>
+      {" from "}
+      <Link color="inherit" href="https://www.flaticon.com/">
+        www.flaticon.com
+      </Link>
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  main: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(2),
+  },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+
+  const details =
+    "This is a description for the thing i am creating for the " +
+    "sample task item in the page for now";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+      <CssBaseline />
+      <main className={classes.main}>
+        <Container>
+          <Box my={1}>
+            <TaskItem
+              title="Testing how it looks"
+              details={details}
+              deadline={new Date()}
+            />
+          </Box>
+          <Box my={1}>
+            <TaskItem title="Testing how it looks pt 2" />
+          </Box>
+          <Box my={1}>
+            <TaskItem title="Testing how it looks pt 2.2" details="syke" />
+          </Box>
+        </Container>
+      </main>
+      <footer className={classes.footer}>
+        <Container maxWidth="sm">
+          <Copyright />
+        </Container>
+      </footer>
     </div>
   );
 }

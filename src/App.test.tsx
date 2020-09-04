@@ -14,6 +14,8 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
+/* Written by Rishvic Pushpakaran. */
+
 import React from "react";
 import { createShallow } from "@material-ui/core/test-utils";
 import App from "./App";
@@ -25,8 +27,7 @@ describe("<App />", () => {
     shallow = createShallow();
   });
 
-  it("renders learn react link", () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper).toHaveTextContent(/learn react/i);
+  it("renders properly", () => {
+    shallow(<App />);
   });
 });
