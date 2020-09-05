@@ -1,3 +1,6 @@
+# OretachiNo Todo App
+
+This is the React-based frontend for the OretachiNo Todo App. Licensed AGPLv3+.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -32,8 +32,8 @@ describe("<TaskItem />", () => {
 
   it("creates a task item with the title", () => {
     const title = "A Task Item with a title";
-    const wrapper = mount(<TaskItem title={title} />);
-    expect(wrapper).toHaveText(title);
+    const wrapper = shallow(<TaskItem title={title} />);
+    expect(wrapper).toIncludeText(title);
   });
 
   it("creates a task item with title and details", () => {
@@ -46,11 +46,5 @@ describe("<TaskItem />", () => {
 
     wrapper.find(ExpandMoreIcon).simulate("click");
     expect(wrapper).toIncludeText(description);
-  });
-
-  it("throws error if you try to create a task item with empty title", () => {
-    expect(() => {
-      shallow(<TaskItem title="" deadline={new Date()} />);
-    }).toThrowError(new Error("tasks items can't have empty titles"));
   });
 });

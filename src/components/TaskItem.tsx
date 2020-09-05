@@ -23,6 +23,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Divider from "@material-ui/core/Divider";
@@ -32,12 +33,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  datecolumn: {
-    marginLeft: "auto",
-  },
+  root: { width: "100%" },
 });
 
 type TaskItemProps = {
@@ -52,9 +48,6 @@ function dateToString(date: Date): string {
 
 function TaskItem(props: TaskItemProps) {
   const { title, details, deadline } = props;
-  if (title === "") {
-    throw new Error("tasks items can't have empty titles");
-  }
   const classes = useStyles();
 
   return (
@@ -66,11 +59,13 @@ function TaskItem(props: TaskItemProps) {
           aria-controls="task-item-content"
           id="task-item-header"
         >
-          <Typography component="h6" display="inline">
-            {title}
-          </Typography>
+          <Box flexGrow={1}>
+            <Typography component="h6" display="inline">
+              {title}
+            </Typography>
+          </Box>
           {deadline && (
-            <div className={classes.datecolumn}>
+            <Box>
               <Chip
                 variant="outlined"
                 color="primary"
@@ -78,12 +73,17 @@ function TaskItem(props: TaskItemProps) {
                 icon={<TimerIcon />}
                 label={dateToString(deadline)}
               />
-            </div>
+            </Box>
           )}
         </AccordionSummary>
         {details && (
           <AccordionDetails>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              paragraph
+            >
               {details}
             </Typography>
           </AccordionDetails>

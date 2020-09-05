@@ -17,17 +17,25 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { createShallow } from "@material-ui/core/test-utils";
+import { createShallow, createMount } from "@material-ui/core/test-utils";
 import App from "./App";
+import TopBar from "./components/TopBar";
 
 describe("<App />", () => {
   let shallow: typeof import("enzyme").shallow;
+  let mount: typeof import("enzyme").mount;
 
   beforeAll(() => {
     shallow = createShallow();
+    mount = createMount();
   });
 
   it("renders properly", () => {
-    shallow(<App />);
+    mount(<App />);
+  });
+
+  it("contains the topbar", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper).toContainReact(<TopBar />);
   });
 });

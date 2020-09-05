@@ -23,20 +23,15 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-
-import TaskItem from "./TaskItem";
 import { makeStyles } from "@material-ui/core";
+
+import TaskItem from "./components/TaskItem";
+import TopBar from "./components/TopBar";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © Rishvic Pushpakaran 2020."}
-      <br />
-      {"To get a copy of the source code, "}
-      <Link color="inherit" href="https://github.com/oretachi-no-org/todo-app">
-        click here
-      </Link>
-      {"."}
       <br />
       {"Icons made by "}
       <Link color="inherit" href="https://www.flaticon.com/authors/freepik">
@@ -57,11 +52,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
   },
   main: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
   footer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(1, 1),
     marginTop: "auto",
     backgroundColor:
       theme.palette.type === "light"
@@ -80,6 +75,7 @@ function App() {
   return (
     <div className={classes.root}>
       <CssBaseline />
+      <TopBar />
       <main className={classes.main}>
         <Container>
           <Box my={1}>
