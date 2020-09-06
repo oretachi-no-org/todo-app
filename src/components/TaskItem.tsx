@@ -18,7 +18,6 @@
 
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -32,10 +31,6 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
-const useStyles = makeStyles({
-  root: { width: "100%" },
-});
-
 type TaskItemProps = {
   title: string;
   details?: string;
@@ -48,67 +43,64 @@ function dateToString(date: Date): string {
 
 function TaskItem(props: TaskItemProps) {
   const { title, details, deadline } = props;
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Accordion TransitionProps={{ unmountOnExit: true }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon id="task-detail-btn" />}
-          aria-label="Expand"
-          aria-controls="task-item-content"
-          id="task-item-header"
-        >
-          <Box flexGrow={1}>
-            <Typography component="h6" display="inline">
-              {title}
-            </Typography>
+    <Accordion TransitionProps={{ unmountOnExit: true }}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon id="task-detail-btn" />}
+        aria-label="Expand"
+        aria-controls="task-item-content"
+        id="task-item-header"
+      >
+        <Box flexGrow={1}>
+          <Typography component="h6" display="inline">
+            {title}
+          </Typography>
+        </Box>
+        {deadline && (
+          <Box>
+            <Chip
+              variant="outlined"
+              color="primary"
+              size="small"
+              icon={<TimerIcon />}
+              label={dateToString(deadline)}
+            />
           </Box>
-          {deadline && (
-            <Box>
-              <Chip
-                variant="outlined"
-                color="primary"
-                size="small"
-                icon={<TimerIcon />}
-                label={dateToString(deadline)}
-              />
-            </Box>
-          )}
-        </AccordionSummary>
-        {details && (
-          <AccordionDetails>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              component="p"
-              paragraph
-            >
-              {details}
-            </Typography>
-          </AccordionDetails>
         )}
-        <Divider />
-        <AccordionActions>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            disableElevation
+      </AccordionSummary>
+      {details && (
+        <AccordionDetails>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            paragraph
           >
-            Delete
-          </Button>
-          <Button
-            variant="contained"
-            color="default"
-            size="small"
-            disableElevation
-          >
-            Edit
-          </Button>
-        </AccordionActions>
-      </Accordion>
-    </div>
+            {details}
+          </Typography>
+        </AccordionDetails>
+      )}
+      <Divider />
+      <AccordionActions>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          disableElevation
+        >
+          Delete
+        </Button>
+        <Button
+          variant="contained"
+          color="default"
+          size="small"
+          disableElevation
+        >
+          Edit
+        </Button>
+      </AccordionActions>
+    </Accordion>
   );
 }
 

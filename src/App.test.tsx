@@ -36,6 +36,6 @@ describe("<App />", () => {
 
   it("contains the topbar", () => {
     const wrapper = shallow(<App />);
-    expect(wrapper).toContainReact(<TopBar />);
+    expect(wrapper.find(TopBar)).toHaveLength(1);
   });
 });

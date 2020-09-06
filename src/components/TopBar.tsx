@@ -17,7 +17,6 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
@@ -25,19 +24,43 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
 import GitHubIcon from "@material-ui/icons/GitHub";
+import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
+import { isUndefined } from "util";
 
-const useStyles = makeStyles(() => ({
-  root: { width: "100%" },
-}));
+type TopBarClasses = {
+  appBar?: string;
+  menuButton?: string;
+};
 
-function TopBar() {
-  const classes = useStyles();
+type TopBarProps = {
+  menuTrigger?: () => void;
+  classes?: TopBarClasses;
+};
+
+function TopBar(props: TopBarProps) {
+  const { menuTrigger, classes } = props;
 
   return (
-    <AppBar position="static" className={classes.root}>
+    <AppBar
+      position="fixed"
+      className={(classes && classes.appBar) || undefined}
+    >
       <Toolbar>
-        <Box px={1}>
+        {menuTrigger && (
+          <Box mr={1}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={menuTrigger}
+              className={(classes && classes.menuButton) || undefined}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        )}
+        <Box mr={1}>
           <TodoIcon />
         </Box>
         <Box flexGrow={1}>
@@ -45,7 +68,7 @@ function TopBar() {
         </Box>
         <Box>
           <IconButton
-            color="default"
+            color="inherit"
             aria-label="source code"
             href="https://github.com/oretachi-no-org/todo-app"
             target="_blank"
