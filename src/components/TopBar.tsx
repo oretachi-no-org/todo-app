@@ -17,12 +17,16 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
+import { useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
@@ -34,16 +38,19 @@ type TopBarClasses = {
 
 type TopBarProps = {
   menuTrigger?: () => void;
+  themeTrigger?: () => void;
   classes?: TopBarClasses;
 };
 
 function TopBar(props: TopBarProps) {
-  const { menuTrigger, classes } = props;
+  const { menuTrigger, themeTrigger, classes } = props;
+  const theme = useTheme();
 
   return (
     <AppBar
+      color="inherit"
       position="fixed"
-      className={(classes && classes.appBar) || undefined}
+      className={classes ? classes.appBar : undefined}
     >
       <Toolbar>
         {menuTrigger && (
@@ -53,7 +60,7 @@ function TopBar(props: TopBarProps) {
               aria-label="open drawer"
               edge="start"
               onClick={menuTrigger}
-              className={(classes && classes.menuButton) || undefined}
+              className={classes ? classes.menuButton : undefined}
             >
               <MenuIcon />
             </IconButton>
@@ -66,16 +73,35 @@ function TopBar(props: TopBarProps) {
           <Typography variant="h6">ToDo App</Typography>
         </Box>
         <Box>
-          <IconButton
-            color="inherit"
-            aria-label="source code"
-            href="https://github.com/oretachi-no-org/todo-app"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <GitHubIcon />
-          </IconButton>
+          <Tooltip title="GitHub Repo">
+            <IconButton
+              color="inherit"
+              aria-label="source code"
+              href="https://github.com/oretachi-no-org/todo-app"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <GitHubIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
+        {themeTrigger && (
+          <Box ml={1}>
+            <Tooltip title="Toggle theme">
+              <IconButton
+                color="inherit"
+                aria-label="toggle theme"
+                onClick={themeTrigger}
+              >
+                {theme.palette.type === "light" ? (
+                  <Brightness4Icon />
+                ) : (
+                  <Brightness7Icon />
+                )}
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );

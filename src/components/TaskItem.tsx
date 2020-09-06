@@ -18,6 +18,7 @@
 
 import React from "react";
 
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -41,8 +42,19 @@ function dateToString(date: Date): string {
   return date.toDateString();
 }
 
+const useStyles = makeStyles((theme) => ({
+  deadlineLight: {
+    color: theme.palette.warning.dark,
+  },
+  deadlineDark: {
+    color: theme.palette.warning.light,
+  },
+}));
+
 function TaskItem(props: TaskItemProps) {
   const { title, details, deadline } = props;
+  const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <Accordion TransitionProps={{ unmountOnExit: true }}>
@@ -61,10 +73,22 @@ function TaskItem(props: TaskItemProps) {
           <Box>
             <Chip
               variant="outlined"
-              color="primary"
               size="small"
-              icon={<TimerIcon />}
+              icon={
+                <TimerIcon
+                  className={
+                    theme.palette.type === "light"
+                      ? classes.deadlineLight
+                      : classes.deadlineDark
+                  }
+                />
+              }
               label={dateToString(deadline)}
+              className={
+                theme.palette.type === "light"
+                  ? classes.deadlineLight
+                  : classes.deadlineDark
+              }
             />
           </Box>
         )}

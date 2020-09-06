@@ -21,6 +21,8 @@ import { createShallow } from "@material-ui/core/test-utils";
 import TopBar from "./TopBar";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
@@ -96,5 +98,53 @@ describe("<TopBar />", () => {
         expect(iconButton).toHaveClassName(btnClassName);
       }
     });
+  });
+
+  it("does not contain theme trigger by default", () => {
+    const wrapper = shallow(
+      <TopBar
+        classes={{ menuButton: "00a3f488-dbab-4ed2-9716-e3ba9c830c3b" }}
+      />
+    );
+    expect(wrapper).not.toContainReact(<Brightness4Icon />);
+    expect(wrapper).not.toContainReact(<Brightness7Icon />);
+  });
+
+  it("contains theme trigger if specified, and icons function properly", () => {
+    let testDarkTheme = false;
+    const handleTestDarkTheme = () => {
+      testDarkTheme = !testDarkTheme;
+    };
+    const wrapper = shallow(
+      <TopBar
+        classes={{ menuButton: "00a3f488-dbab-4ed2-9716-e3ba9c830c3b" }}
+        themeTrigger={handleTestDarkTheme}
+      />
+    );
+    expect(wrapper).toContainReact(<Brightness4Icon />);
+    expect(wrapper).not.toContainReact(<Brightness7Icon />);
+  });
+
+  it("contains theme trigger if specified, and icons function properly", () => {
+    let testDarkTheme = false;
+    const handleTestDarkTheme = () => {
+      testDarkTheme = !testDarkTheme;
+    };
+    const wrapper = shallow(
+      <TopBar
+        classes={{ menuButton: "00a3f488-dbab-4ed2-9716-e3ba9c830c3b" }}
+        themeTrigger={handleTestDarkTheme}
+      />
+    );
+
+    wrapper.find(IconButton).forEach((iconButton) => {
+      if (
+        iconButton.containsMatchingElement(<Brightness4Icon />) ||
+        iconButton.containsMatchingElement(<Brightness7Icon />)
+      ) {
+        iconButton.simulate("click");
+      }
+    });
+    expect(testDarkTheme).toBe(true);
   });
 });

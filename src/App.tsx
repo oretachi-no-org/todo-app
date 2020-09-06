@@ -26,7 +26,12 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 
 import TaskItem from "./components/TaskItem";
 import TopBar from "./components/TopBar";
@@ -42,11 +47,11 @@ import MailIcon from "@material-ui/icons/Mail";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © Rishvic Pushpakaran 2020."}
+      Copyright © Rishvic Pushpakaran 2020.
       <br />
       {"Icons made by "}
       <Link
-        color="primary"
+        color="inherit"
         href="https://www.flaticon.com/authors/freepik"
         target="_blank"
         rel="noopener"
@@ -55,7 +60,7 @@ function Copyright() {
       </Link>
       {" from "}
       <Link
-        color="primary"
+        color="inherit"
         href="https://www.flaticon.com/"
         target="_blank"
         rel="noopener"
@@ -87,6 +92,12 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  appBarLight: {
+    background: "linear-gradient(60deg, #FF6363 30%, #FFBD69 90%)",
+  },
+  appBarDark: {
+    background: "linear-gradient(300deg, #202040 30%, #543864 90%)",
+  },
   menuButton: {
     [theme.breakpoints.up("sm")]: {
       display: "none",
@@ -99,19 +110,42 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     padding: theme.spacing(1, 1),
     marginTop: "auto",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[200]
-        : theme.palette.grey[800],
+  },
+  footerLight: {
+    backgroundColor: theme.palette.grey[200],
+  },
+  footerDark: {
+    backgroundColor: theme.palette.grey[800],
   },
 }));
 
 function App() {
+  const [darkMode, setDarkMode] = React.useState(
+    useMediaQuery("(prefers-color-scheme: dark)")
+  );
+  const handleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const appTheme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: darkMode ? "dark" : "light",
+        },
+      }),
+    [darkMode]
+  );
+
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const details =
+    "This is a description for the thing i am creating for the " +
+    "sample task item in the page for now";
 
   const tempDrawer = (
     <div>
@@ -141,50 +175,49 @@ function App() {
     </div>
   );
 
-  const details =
-    "This is a description for the thing i am creating for the " +
-    "sample task item in the page for now";
-
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <TopBar
-        menuTrigger={handleDrawerToggle}
-        classes={{
-          appBar: classes.appBar,
-          menuButton: classes.menuButton,
-        }}
-      />
-      <nav className={classes.drawer} aria-label="task lists">
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor="left"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            {tempDrawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{ paper: classes.drawerPaper }}
-            variant="permanent"
-            open
-          >
-            {tempDrawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <Grid container direction="column">
-        <Grid item>
-          <main className={classes.main}>
+      <ThemeProvider theme={appTheme}>
+        <CssBaseline />
+        <TopBar
+          menuTrigger={handleDrawerToggle}
+          themeTrigger={handleDarkMode}
+          classes={{
+            appBar: `${classes.appBar} ${
+              darkMode ? classes.appBarDark : classes.appBarLight
+            }`,
+            menuButton: classes.menuButton,
+          }}
+        />
+        <nav className={classes.drawer} aria-label="task lists">
+          <Hidden smUp implementation="css">
+            <Drawer
+              variant="temporary"
+              anchor="left"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true,
+              }}
+            >
+              {tempDrawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{ paper: classes.drawerPaper }}
+              variant="permanent"
+              open
+            >
+              {tempDrawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+        <Grid container direction="column">
+          <Grid item component="main" className={classes.main}>
             <div className={classes.toolbar} />
             <Container>
               <Box my={1}>
@@ -201,16 +234,20 @@ function App() {
                 <TaskItem title="Testing how it looks pt 2.2" details="syke" />
               </Box>
             </Container>
-          </main>
-        </Grid>
-        <Grid item className={classes.footer}>
-          <footer>
+          </Grid>
+          <Grid
+            item
+            component="footer"
+            className={`${classes.footer} ${
+              darkMode ? classes.footerDark : classes.footerLight
+            }`}
+          >
             <Container maxWidth="sm">
               <Copyright />
             </Container>
-          </footer>
+          </Grid>
         </Grid>
-      </Grid>
+      </ThemeProvider>
     </div>
   );
 }
