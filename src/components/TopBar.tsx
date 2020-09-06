@@ -26,7 +26,6 @@ import Typography from "@material-ui/core/Typography";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
-import { isUndefined } from "util";
 
 type TopBarClasses = {
   appBar?: string;
