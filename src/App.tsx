@@ -148,7 +148,7 @@ function App() {
     "sample task item in the page for now";
 
   const tempDrawer = (
-    <div>
+    <>
       <div className={classes.toolbar} />
       <Divider />
       <List>
@@ -172,7 +172,7 @@ function App() {
           </ListItem>
         ))}
       </List>
-    </div>
+    </>
   );
 
   return (
@@ -222,16 +222,24 @@ function App() {
             <Container>
               <Box my={1}>
                 <TaskItem
+                  taskId="00ddf37a-3fdc-4675-9ded-028b4e8de4ac"
                   title="Testing how it looks"
                   details={details}
                   deadline={new Date()}
                 />
               </Box>
               <Box my={1}>
-                <TaskItem title="Testing how it looks pt 2" />
+                <TaskItem
+                  taskId="53b49553-3d5e-4102-abdb-ddf5bccd03f3"
+                  title="Testing how it looks pt 2"
+                />
               </Box>
               <Box my={1}>
-                <TaskItem title="Testing how it looks pt 2.2" details="syke" />
+                <TaskItem
+                  taskId="3e6d8c56-c9dd-4028-b449-ca0c6d602d39"
+                  title="Testing how it looks pt 2.2"
+                  details="syke"
+                />
               </Box>
             </Container>
           </Grid>

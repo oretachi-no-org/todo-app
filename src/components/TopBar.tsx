@@ -87,7 +87,7 @@ function TopBar(props: TopBarProps) {
         </Box>
         {themeTrigger && (
           <Box ml={1}>
-            <Tooltip title="Toggle theme">
+            <Tooltip title="Toggle light/dark theme">
               <IconButton
                 color="inherit"
                 aria-label="toggle theme"

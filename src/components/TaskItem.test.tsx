@@ -32,7 +32,9 @@ describe("<TaskItem />", () => {
 
   it("creates a task item with the title", () => {
     const title = "A Task Item with a title";
-    const wrapper = shallow(<TaskItem title={title} />);
+    const wrapper = shallow(
+      <TaskItem taskId="21529dfb-6fde-4de3-b416-b96cb91039ca" title={title} />
+    );
     expect(wrapper).toIncludeText(title);
   });
 
@@ -41,7 +43,13 @@ describe("<TaskItem />", () => {
     const description =
       "This is a long description of what needs to be in the file to show that it is working";
 
-    const wrapper = mount(<TaskItem title={title} details={description} />);
+    const wrapper = mount(
+      <TaskItem
+        taskId="7a635e4e-d2ee-4b3e-a221-42f18d30d2bd"
+        title={title}
+        details={description}
+      />
+    );
     expect(wrapper).toIncludeText(title);
 
     wrapper.find(ExpandMoreIcon).simulate("click");

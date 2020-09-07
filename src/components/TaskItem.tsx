@@ -33,6 +33,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
 type TaskItemProps = {
+  taskId: string;
   title: string;
   details?: string;
   deadline?: Date;
