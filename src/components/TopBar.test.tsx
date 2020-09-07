@@ -83,14 +83,14 @@ describe("<TopBar />", () => {
   });
 
   it("sets the class of app bar with the passed class", () => {
-    const appClassName = "TestClassVeryLongSoThatNoOneGuessesIt";
+    const appClassName = "b60b1ad2-cabd-426e-b68b-97ca5f84e70e";
     const wrapper = shallow(<TopBar classes={{ appBar: appClassName }} />);
 
     expect(wrapper.find(AppBar)).toHaveClassName(appClassName);
   });
 
   it("sets the class of menu button with the required class name", () => {
-    const btnClassName = "ThisIsAlsoVeryLongSoThatNoOneByChanceGetsThisToo";
+    const btnClassName = "fac5c0f3-1b2e-4371-a3bb-f66e2ea0b2a3";
     const wrapper = shallow(<TopBar classes={{ menuButton: btnClassName }} />);
 
     wrapper.find(IconButton).forEach((iconButton) => {
@@ -132,7 +132,7 @@ describe("<TopBar />", () => {
     };
     const wrapper = shallow(
       <TopBar
-        classes={{ menuButton: "00a3f488-dbab-4ed2-9716-e3ba9c830c3b" }}
+        classes={{ menuButton: "5760e9ef-8d8c-4a92-ac9a-a9794b759098" }}
         themeTrigger={handleTestDarkTheme}
       />
     );

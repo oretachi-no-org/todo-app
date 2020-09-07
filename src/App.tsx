@@ -24,8 +24,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   makeStyles,
@@ -33,6 +31,7 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 
+import FooterCopyright from "./components/FooterCopyright";
 import TaskItem from "./components/TaskItem";
 import TopBar from "./components/TopBar";
 
@@ -43,33 +42,6 @@ import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import InboxIcon from "@material-ui/icons/Inbox";
 import MailIcon from "@material-ui/icons/Mail";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      Copyright © Rishvic Pushpakaran 2020.
-      <br />
-      {"Icons made by "}
-      <Link
-        color="inherit"
-        href="https://www.flaticon.com/authors/freepik"
-        target="_blank"
-        rel="noopener"
-      >
-        Freepik
-      </Link>
-      {" from "}
-      <Link
-        color="inherit"
-        href="https://www.flaticon.com/"
-        target="_blank"
-        rel="noopener"
-      >
-        www.flaticon.com
-      </Link>
-    </Typography>
-  );
-}
 
 const drawerWidth = 220;
 
@@ -147,7 +119,7 @@ function App() {
     "This is a description for the thing i am creating for the " +
     "sample task item in the page for now";
 
-  const tempDrawer = (
+  const TempDrawer = () => (
     <>
       <div className={classes.toolbar} />
       <Divider />
@@ -196,14 +168,12 @@ function App() {
               anchor="left"
               open={mobileOpen}
               onClose={handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
+              classes={{ paper: classes.drawerPaper }}
               ModalProps={{
                 keepMounted: true,
               }}
             >
-              {tempDrawer}
+              <TempDrawer />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -212,7 +182,7 @@ function App() {
               variant="permanent"
               open
             >
-              {tempDrawer}
+              <TempDrawer />
             </Drawer>
           </Hidden>
         </nav>
@@ -243,17 +213,7 @@ function App() {
               </Box>
             </Container>
           </Grid>
-          <Grid
-            item
-            component="footer"
-            className={`${classes.footer} ${
-              darkMode ? classes.footerDark : classes.footerLight
-            }`}
-          >
-            <Container maxWidth="sm">
-              <Copyright />
-            </Container>
-          </Grid>
+          <FooterCopyright />
         </Grid>
       </ThemeProvider>
     </div>
