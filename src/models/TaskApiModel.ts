@@ -1,4 +1,4 @@
-/* index.tsx
+/* TaskApiModel.ts -- model for data recieved by API
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,12 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
+type TaskApiModel = {
+  id: string;
+  title: string;
+  completed: boolean;
+  description?: string;
+  dueDate?: Date;
+};
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export default TaskApiModel;

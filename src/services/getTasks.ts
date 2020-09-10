@@ -1,4 +1,4 @@
-/* App.test.tsx -- testing main app
+/* getTasks.ts -- hit ToDo backend API to get tasks
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,35 +16,21 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import React from "react";
-import { MemoryRouter } from "react-router-dom";
-import { createMount, createRender } from "@material-ui/core/test-utils";
-import App from "./App";
-import TopBar from "./components/TopBar";
+import axios from "axios";
+import TaskApiModel from "../models/TaskApiModel";
 
-describe("<App />", () => {
-  let mount: typeof import("enzyme").mount;
-  let render: typeof import("enzyme").render;
-
-  beforeAll(() => {
-    mount = createMount();
-    render = createRender();
+function getTasks(listId: string): Promise<TaskApiModel[]> {
+  return new Promise((resolve, reject) => {
+    axios
+      .get<TaskApiModel[]>("/task/all")
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
   });
+}
 
-  it("renders properly", () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
-  });
-
-  it("contains the topbar", () => {
-    const wrapper = mount(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
-    expect(wrapper.find(TopBar)).toHaveLength(1);
-  });
-});
+export default getTasks;

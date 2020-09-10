@@ -18,8 +18,6 @@
 
 import React from "react";
 
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
@@ -30,9 +28,10 @@ import {
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
+import { Switch, Route } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
-import TaskItem from "./components/TaskItem";
+import TaskGroup from "./components/TaskGroup";
 import TopBar from "./components/TopBar";
 
 import Divider from "@material-ui/core/Divider";
@@ -115,10 +114,6 @@ function App() {
     setMobileOpen(!mobileOpen);
   };
 
-  const details =
-    "This is a description for the thing i am creating for the " +
-    "sample task item in the page for now";
-
   const TempDrawer = () => (
     <>
       <div className={classes.toolbar} />
@@ -189,29 +184,11 @@ function App() {
         <Grid container direction="column">
           <Grid item component="main" className={classes.main}>
             <div className={classes.toolbar} />
-            <Container>
-              <Box my={1}>
-                <TaskItem
-                  taskId="00ddf37a-3fdc-4675-9ded-028b4e8de4ac"
-                  title="Testing how it looks"
-                  details={details}
-                  deadline={new Date()}
-                />
-              </Box>
-              <Box my={1}>
-                <TaskItem
-                  taskId="53b49553-3d5e-4102-abdb-ddf5bccd03f3"
-                  title="Testing how it looks pt 2"
-                />
-              </Box>
-              <Box my={1}>
-                <TaskItem
-                  taskId="3e6d8c56-c9dd-4028-b449-ca0c6d602d39"
-                  title="Testing how it looks pt 2.2"
-                  details="syke"
-                />
-              </Box>
-            </Container>
+            <Switch>
+              <Route path="/list/:listId">
+                <TaskGroup />
+              </Route>
+            </Switch>
           </Grid>
           <FooterCopyright />
         </Grid>

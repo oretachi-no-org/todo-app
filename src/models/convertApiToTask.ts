@@ -1,4 +1,4 @@
-/* index.tsx
+/* convertApiToTask.ts -- converts TaskApiModel to TaskModel
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,21 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
+import TaskApiModel from "../models/TaskApiModel";
+import TaskModel from "../models/TaskModel";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+function convertApiToTask(task: TaskApiModel): TaskModel {
+  const { id, title, completed, description, dueDate } = task;
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  return {
+    taskId: id,
+    content: {
+      title: title,
+      completed: completed,
+      details: description,
+      deadline: dueDate,
+    },
+  };
+}
+
+export default convertApiToTask;

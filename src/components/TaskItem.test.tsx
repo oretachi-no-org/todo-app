@@ -17,23 +17,25 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { createShallow, createMount } from "@material-ui/core/test-utils";
+import { createMount } from "@material-ui/core/test-utils";
 import TaskItem from "./TaskItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 describe("<TaskItem />", () => {
-  let shallow: typeof import("enzyme").shallow;
   let mount: typeof import("enzyme").mount;
 
   beforeAll(() => {
-    shallow = createShallow();
     mount = createMount();
   });
 
   it("creates a task item with the title", () => {
     const title = "A Task Item with a title";
-    const wrapper = shallow(
-      <TaskItem taskId="21529dfb-6fde-4de3-b416-b96cb91039ca" title={title} />
+
+    const wrapper = mount(
+      <TaskItem
+        taskId="21529dfb-6fde-4de3-b416-b96cb91039ca"
+        content={{ title: title, completed: false }}
+      />
     );
     expect(wrapper).toIncludeText(title);
   });
@@ -46,8 +48,11 @@ describe("<TaskItem />", () => {
     const wrapper = mount(
       <TaskItem
         taskId="7a635e4e-d2ee-4b3e-a221-42f18d30d2bd"
-        title={title}
-        details={description}
+        content={{
+          title: title,
+          completed: true,
+          details: description,
+        }}
       />
     );
     expect(wrapper).toIncludeText(title);

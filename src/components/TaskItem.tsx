@@ -25,19 +25,16 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
 import Chip from "@material-ui/core/Chip";
 import Divider from "@material-ui/core/Divider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
-type TaskItemProps = {
-  taskId: string;
-  title: string;
-  details?: string;
-  deadline?: Date;
-};
+import TaskModel from "../models/TaskModel";
 
 function dateToString(date: Date): string {
   return date.toDateString();
@@ -52,8 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TaskItem(props: TaskItemProps) {
-  const { title, details, deadline } = props;
+type Props = TaskModel & { setter: (x: boolean) => void };
+
+function TaskItem(props: Props) {
+  const { taskId, content, setter } = props;
+  const { title, completed, details, deadline } = content;
   const classes = useStyles();
   const theme = useTheme();
 
@@ -66,9 +66,26 @@ function TaskItem(props: TaskItemProps) {
         id="task-item-header"
       >
         <Box flexGrow={1}>
-          <Typography component="h6" display="inline">
-            {title}
-          </Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={completed}
+                onChange={(event) => {
+                  setter(event.target.checked);
+                }}
+              />
+            }
+            label={
+              <Typography
+                color={completed ? "textSecondary" : "textPrimary"}
+                component="h6"
+                display="inline"
+              >
+                {completed ? <del>{title}</del> : title}
+              </Typography>
+            }
+          />
         </Box>
         {deadline && (
           <Box>
@@ -96,12 +113,7 @@ function TaskItem(props: TaskItemProps) {
       </AccordionSummary>
       {details && (
         <AccordionDetails>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            paragraph
-          >
+          <Typography variant="body2" color="textSecondary" paragraph>
             {details}
           </Typography>
         </AccordionDetails>
