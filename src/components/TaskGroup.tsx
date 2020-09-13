@@ -79,7 +79,6 @@ function TaskGroup({ listId }: { listId: string }) {
     (task) => task.content.completed
   );
 
-  console.log(tasks);
   return (
     <Container>
       {loading ? (

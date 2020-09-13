@@ -57,8 +57,6 @@ function TaskList({ listId }: { listId?: string }) {
       });
   }, []);
 
-  console.log(`list id : '${listId}'`);
-
   return (
     <>
       {loading ? (
