@@ -17,63 +17,36 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(1, 1),
-  },
-  footerLight: {
-    backgroundColor: theme.palette.grey[200],
-  },
-  footerDark: {
-    backgroundColor: theme.palette.grey[800],
-  },
-}));
-
 function FooterCopyright() {
-  const classes = useStyles();
-  const theme = useTheme();
-
   return (
-    <Grid
-      item
-      component="footer"
-      className={`${classes.root} ${
-        theme.palette.type === "light"
-          ? classes.footerLight
-          : classes.footerDark
-      }`}
-    >
-      <Container maxWidth="sm">
-        <Typography variant="body2" color="textSecondary" align="center">
-          Copyright © Rishvic Pushpakaran 2020.
-          <br />
-          {"Icons made by "}
-          <Link
-            color="inherit"
-            href="https://www.flaticon.com/authors/freepik"
-            target="_blank"
-            rel="noopener"
-          >
-            Freepik
-          </Link>
-          {" from "}
-          <Link
-            color="inherit"
-            href="https://www.flaticon.com/"
-            target="_blank"
-            rel="noopener"
-          >
-            www.flaticon.com
-          </Link>
-        </Typography>
-      </Container>
-    </Grid>
+    <Container maxWidth="sm">
+      <Typography variant="body2" color="textSecondary" align="center">
+        Copyright © Rishvic Pushpakaran 2020.
+        <br />
+        {"Icons made by "}
+        <Link
+          color="inherit"
+          href="https://www.flaticon.com/authors/freepik"
+          target="_blank"
+          rel="noopener"
+        >
+          Freepik
+        </Link>
+        {" from "}
+        <Link
+          color="inherit"
+          href="https://www.flaticon.com/"
+          target="_blank"
+          rel="noopener"
+        >
+          www.flaticon.com
+        </Link>
+      </Typography>
+    </Container>
   );
 }
 

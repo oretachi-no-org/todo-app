@@ -54,14 +54,14 @@ function taskGroupReducer(
   switch (action.type) {
     case TaskGroupActions.ADD:
       newState[action.payload.taskId] = action.payload;
-      return newState;
+      break;
 
     case TaskGroupActions.REMOVE:
       delete newState[action.payload];
-      return newState;
+      break;
 
     case TaskGroupActions.SET:
-      return action.payload;
+      return { ...action.payload };
 
     case TaskGroupActions.SET_COMPLETED:
       newState[action.payload].content.completed = true;
@@ -69,8 +69,10 @@ function taskGroupReducer(
 
     case TaskGroupActions.UNSET_COMPLETED:
       newState[action.payload].content.completed = false;
-      return newState;
+      break;
   }
+
+  return newState;
 }
 
 export default taskGroupReducer;

@@ -19,76 +19,73 @@
 import React from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
-  makeStyles,
-  ThemeProvider,
   createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme,
+  ThemeProvider,
 } from "@material-ui/core/styles";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
 import TaskGroup from "./components/TaskGroup";
+import TaskList from "./components/TaskList";
 import TopBar from "./components/TopBar";
-
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import InboxIcon from "@material-ui/icons/Inbox";
-import MailIcon from "@material-ui/icons/Mail";
 
 const drawerWidth = 220;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    minHeight: "100vh",
-  },
-  main: {
-    flexGrow: 1,
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+      minHeight: "100vh",
+    },
+    main: {
+      flexGrow: 1,
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+    },
+    drawer: {
+      [theme.breakpoints.up("sm")]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+    },
+    appBarLight: {
+      background: "linear-gradient(60deg, #FF6363 30%, #FFBD69 90%)",
+    },
+    appBarDark: {
+      background: "linear-gradient(300deg, #202040 30%, #543864 90%)",
+    },
+    menuButton: {
+      [theme.breakpoints.up("sm")]: {
+        display: "none",
+      },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
       width: drawerWidth,
-      flexShrink: 0,
     },
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  appBarLight: {
-    background: "linear-gradient(60deg, #FF6363 30%, #FFBD69 90%)",
-  },
-  appBarDark: {
-    background: "linear-gradient(300deg, #202040 30%, #543864 90%)",
-  },
-  menuButton: {
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
+    footer: {
+      padding: theme.spacing(1, 1),
     },
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  footer: {
-    padding: theme.spacing(1, 1),
-    marginTop: "auto",
-  },
-  footerLight: {
-    backgroundColor: theme.palette.grey[200],
-  },
-  footerDark: {
-    backgroundColor: theme.palette.grey[800],
-  },
-}));
+    footerLight: {
+      backgroundColor: theme.palette.grey[200],
+    },
+    footerDark: {
+      backgroundColor: theme.palette.grey[800],
+    },
+  })
+);
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(
@@ -118,27 +115,14 @@ function App() {
     <>
       <div className={classes.toolbar} />
       <Divider />
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <Switch>
+        <Route
+          path="/list/:listId?"
+          exact
+          render={({ match }: any) => <TaskList listId={match.params.listId} />}
+        />
+        <Redirect to="/list" />
+      </Switch>
     </>
   );
 
@@ -157,7 +141,7 @@ function App() {
           }}
         />
         <nav className={classes.drawer} aria-label="task lists">
-          <Hidden smUp implementation="css">
+          <Hidden smUp implementation="js">
             <Drawer
               variant="temporary"
               anchor="left"
@@ -171,7 +155,7 @@ function App() {
               <TempDrawer />
             </Drawer>
           </Hidden>
-          <Hidden xsDown implementation="css">
+          <Hidden xsDown implementation="js">
             <Drawer
               classes={{ paper: classes.drawerPaper }}
               variant="permanent"
@@ -190,7 +174,15 @@ function App() {
               </Route>
             </Switch>
           </Grid>
-          <FooterCopyright />
+          <Grid
+            item
+            component="footer"
+            className={`${classes.footer} ${
+              darkMode ? classes.footerDark : classes.footerLight
+            }`}
+          >
+            <FooterCopyright />
+          </Grid>
         </Grid>
       </ThemeProvider>
     </div>

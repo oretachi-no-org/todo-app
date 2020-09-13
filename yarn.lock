@@ -10536,7 +10536,7 @@ fsevents@^1.2.7:
     prettier: 2.1.1
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-router-dom: ^5.2.0
+    react-router-dom: ^5.1.5
     react-scripts: 3.4.3
     react-test-renderer: ^16.13.1
     typescript: ~3.7.2
@@ -12347,7 +12347,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^5.2.0":
+"react-router-dom@npm:^5.1.5":
   version: 5.2.0
   resolution: "react-router-dom@npm:5.2.0"
   dependencies:

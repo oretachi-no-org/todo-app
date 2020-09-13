@@ -17,8 +17,14 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
+import CloseIcon from "@material-ui/icons/Close";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  useTheme,
+} from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -35,109 +41,161 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
 import TaskModel from "../models/TaskModel";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
 
 function dateToString(date: Date): string {
   return date.toDateString();
 }
 
-const useStyles = makeStyles((theme) => ({
-  deadlineLight: {
-    color: theme.palette.warning.dark,
-  },
-  deadlineDark: {
-    color: theme.palette.warning.light,
-  },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    deadlineLight: {
+      color: theme.palette.warning.dark,
+    },
+    deadlineDark: {
+      color: theme.palette.warning.light,
+    },
+  })
+);
 
-type Props = TaskModel & { setter: (x: boolean) => void };
+type SetterProps = {
+  setCompleted: (taskId: string, x: boolean) => void;
+  deleter: (taskId: string) => void;
+};
+
+type Props = TaskModel & SetterProps;
 
 function TaskItem(props: Props) {
-  const { taskId, content, setter } = props;
+  const { taskId, content, setCompleted, deleter } = props;
   const { title, completed, details, deadline } = content;
   const classes = useStyles();
   const theme = useTheme();
 
+  const [openDelete, setOpenDelete] = React.useState<boolean>(false);
+
+  const handleDelete = () => {
+    setOpenDelete(true);
+  };
+
   return (
-    <Accordion TransitionProps={{ unmountOnExit: true }}>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon id="task-detail-btn" />}
-        aria-label="Expand"
-        aria-controls="task-item-content"
-        id="task-item-header"
-      >
-        <Box flexGrow={1}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                size="small"
-                checked={completed}
-                onChange={(event) => {
-                  setter(event.target.checked);
-                }}
-              />
-            }
-            label={
-              <Typography
-                color={completed ? "textSecondary" : "textPrimary"}
-                component="h6"
-                display="inline"
-              >
-                {completed ? <del>{title}</del> : title}
-              </Typography>
-            }
-          />
-        </Box>
-        {deadline && (
-          <Box>
-            <Chip
-              variant="outlined"
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        open={openDelete}
+        autoHideDuration={6000}
+        message="Task deleted"
+        onClose={() => {
+          setOpenDelete(false);
+          deleter(taskId);
+        }}
+        action={
+          <React.Fragment>
+            <Button
+              color="secondary"
               size="small"
-              icon={
-                <TimerIcon
+              onClick={() => setOpenDelete(false)}
+            >
+              UNDO
+            </Button>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setOpenDelete(false);
+                deleter(taskId);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
+      {!openDelete && (
+        <Accordion TransitionProps={{ unmountOnExit: true }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon id="task-detail-btn" />}
+            aria-label="Expand"
+            aria-controls="task-item-content"
+            id="task-item-header"
+          >
+            <Box flexGrow={1}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    size="small"
+                    checked={completed}
+                    onChange={(event) => {
+                      setCompleted(taskId, event.target.checked);
+                    }}
+                  />
+                }
+                label={
+                  <Typography
+                    color={completed ? "textSecondary" : "textPrimary"}
+                    component="h6"
+                    display="inline"
+                  >
+                    {completed ? <del>{title}</del> : title}
+                  </Typography>
+                }
+              />
+            </Box>
+            {deadline && (
+              <Box>
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  icon={
+                    <TimerIcon
+                      className={
+                        theme.palette.type === "light"
+                          ? classes.deadlineLight
+                          : classes.deadlineDark
+                      }
+                    />
+                  }
+                  label={dateToString(deadline)}
                   className={
                     theme.palette.type === "light"
                       ? classes.deadlineLight
                       : classes.deadlineDark
                   }
                 />
-              }
-              label={dateToString(deadline)}
-              className={
-                theme.palette.type === "light"
-                  ? classes.deadlineLight
-                  : classes.deadlineDark
-              }
-            />
-          </Box>
-        )}
-      </AccordionSummary>
-      {details && (
-        <AccordionDetails>
-          <Typography variant="body2" color="textSecondary" paragraph>
-            {details}
-          </Typography>
-        </AccordionDetails>
+              </Box>
+            )}
+          </AccordionSummary>
+          {details && (
+            <AccordionDetails>
+              <Typography variant="body2" color="textSecondary" paragraph>
+                {details}
+              </Typography>
+            </AccordionDetails>
+          )}
+          <Divider />
+          <AccordionActions>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              disableElevation
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              disableElevation
+            >
+              Edit
+            </Button>
+          </AccordionActions>
+        </Accordion>
       )}
-      <Divider />
-      <AccordionActions>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          disableElevation
-        >
-          Delete
-        </Button>
-        <Button
-          variant="contained"
-          color="default"
-          size="small"
-          disableElevation
-        >
-          Edit
-        </Button>
-      </AccordionActions>
-    </Accordion>
+    </>
   );
 }
 

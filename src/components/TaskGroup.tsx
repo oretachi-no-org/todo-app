@@ -44,27 +44,44 @@ function TaskGroup() {
     getTasks(listId)
       .then((res) => {
         setLoading(false);
-        const newTasks = _.reduce(
-          res,
-          (result: { [key: string]: TaskModel }, item) => {
-            result[item.id] = convertApiToTask(item);
-            return result;
-          },
-          {}
+        const newTasks = _.assign(
+          {},
+          ...res.map((item) => ({ [item.id]: convertApiToTask(item) }))
         );
-        dispatch({
-          type: TaskGroupActions.SET,
-          payload: newTasks,
-        });
+
+        dispatch({ type: TaskGroupActions.SET, payload: newTasks });
       })
-      .catch((result: Error) => {
+      .catch((res) => {
         setLoading(false);
         setFailed(true);
-        console.log(`Got Error: ${result.message}`);
-        console.log(`Error Stack: ${result.stack}`);
+        console.log(`Got Error while trying to get tasks: ${res}`);
       });
   }, [listId]);
 
+  const setCompleted = React.useCallback((taskId: string, x: boolean) => {
+    dispatch({
+      type: x
+        ? TaskGroupActions.SET_COMPLETED
+        : TaskGroupActions.UNSET_COMPLETED,
+      payload: taskId,
+    });
+  }, []);
+
+  const deleter = React.useCallback((taskId: string) => {
+    dispatch({
+      type: TaskGroupActions.REMOVE,
+      payload: taskId,
+    });
+  }, []);
+
+  const notCompletedTasks = Object.values(tasks).filter(
+    (task) => !task.content.completed
+  );
+  const completedTasks = Object.values(tasks).filter(
+    (task) => task.content.completed
+  );
+
+  console.log(`List ID for Group is ${listId}`);
   return (
     <Container>
       {loading ? (
@@ -75,46 +92,47 @@ function TaskGroup() {
         </Typography>
       ) : (
         <>
-          <Typography variant="h5">Remaining</Typography>
-          <Divider />
-          <Box mt={1} mb={2}>
-            {Object.values(tasks)
-              .filter((task) => !task.content.completed)
-              .map((task) => (
-                <TaskItem
-                  {...task}
-                  setter={(x: boolean) =>
-                    dispatch({
-                      type: x
-                        ? TaskGroupActions.SET_COMPLETED
-                        : TaskGroupActions.UNSET_COMPLETED,
-                      payload: task.taskId,
-                    })
-                  }
-                  key={task.taskId}
-                />
-              ))}
-          </Box>
-          <Typography variant="h5">Completed</Typography>
-          <Divider />
-          <Box mt={1} mb={2}>
-            {Object.values(tasks)
-              .filter((task) => task.content.completed)
-              .map((task) => (
-                <TaskItem
-                  {...task}
-                  setter={(x: boolean) =>
-                    dispatch({
-                      type: x
-                        ? TaskGroupActions.SET_COMPLETED
-                        : TaskGroupActions.UNSET_COMPLETED,
-                      payload: task.taskId,
-                    })
-                  }
-                  key={task.taskId}
-                />
-              ))}
-          </Box>
+          {notCompletedTasks.length > 0 && (
+            <>
+              <Box mt={1} mb={1}>
+                <Typography variant="h5">Remaining</Typography>
+              </Box>
+              <Divider />
+              <Box mt={1} mb={4}>
+                {notCompletedTasks.map((task) => (
+                  <TaskItem
+                    {...task}
+                    setCompleted={setCompleted}
+                    deleter={deleter}
+                    key={task.taskId}
+                  />
+                ))}
+              </Box>
+            </>
+          )}
+          {completedTasks.length > 0 && (
+            <>
+              <Box mt={1} mb={1}>
+                <Typography variant="h5">Completed</Typography>
+              </Box>
+              <Divider />
+              <Box mt={1} mb={1}>
+                {completedTasks.map((task) => (
+                  <TaskItem
+                    {...task}
+                    setCompleted={setCompleted}
+                    deleter={deleter}
+                    key={task.taskId}
+                  />
+                ))}
+              </Box>
+            </>
+          )}
+          {completedTasks.length === 0 && notCompletedTasks.length === 0 && (
+            <Typography variant="h4" align="center">
+              Wow, Such Empty
+            </Typography>
+          )}
         </>
       )}
     </Container>
