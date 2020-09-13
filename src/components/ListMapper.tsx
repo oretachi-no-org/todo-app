@@ -1,4 +1,4 @@
-/* TaskList.tsx -- component listing all tasks
+/* ListMapper.tsx -- component listing all tasks
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -30,14 +30,14 @@ import ListIcon from "@material-ui/icons/List";
 
 import { Link as RouterLink } from "react-router-dom";
 
-import TaskListActions from "../models/TaskListActions";
-import taskListReducer from "../reducers/taskListReducer";
+import ListMapperActions from "../models/ListMapperActions";
+import listMapperReducer from "../reducers/listMapperReducer";
 import getLists from "../services/getLists";
 
-function TaskList({ listId }: { listId?: string }) {
+function ListMapper({ listId }: { listId?: string }) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
-  const [lists, dispatch] = React.useReducer(taskListReducer, {});
+  const [lists, dispatch] = React.useReducer(listMapperReducer, {});
 
   React.useEffect(() => {
     getLists()
@@ -48,7 +48,7 @@ function TaskList({ listId }: { listId?: string }) {
           ...res.map((listItem) => ({ [listItem.id]: listItem }))
         );
 
-        dispatch({ type: TaskListActions.SET, payload: newLists });
+        dispatch({ type: ListMapperActions.SET, payload: newLists });
       })
       .catch((res) => {
         setLoading(false);
@@ -87,4 +87,4 @@ function TaskList({ listId }: { listId?: string }) {
   );
 }
 
-export default TaskList;
+export default ListMapper;

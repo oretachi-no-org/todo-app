@@ -1,4 +1,4 @@
-/* taskGroupReducer.ts -- reducer for managing task group
+/* taskMapperReducer.ts -- reducer for managing task group
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -17,26 +17,26 @@
 /* Written by Rishvic Pushpakaran. */
 
 import TaskModel from "../models/TaskModel";
-import TaskGroupActions from "../models/TaskGroupActions";
+import TaskMapperActions from "../models/TaskMapperActions";
 
 type ReducerAddType = {
-  type: TaskGroupActions.ADD;
+  type: TaskMapperActions.ADD;
   payload: TaskModel;
 };
 type ReducerRemoveType = {
-  type: TaskGroupActions.REMOVE;
+  type: TaskMapperActions.REMOVE;
   payload: string;
 };
 type ReducerSetType = {
-  type: TaskGroupActions.SET;
+  type: TaskMapperActions.SET;
   payload: { [key: string]: TaskModel };
 };
 type ReducerSetCompletedType = {
-  type: TaskGroupActions.SET_COMPLETED;
+  type: TaskMapperActions.SET_COMPLETED;
   payload: string;
 };
 type ReducerUnsetCompletedType = {
-  type: TaskGroupActions.UNSET_COMPLETED;
+  type: TaskMapperActions.UNSET_COMPLETED;
   payload: string;
 };
 type ReducerActionType =
@@ -46,28 +46,28 @@ type ReducerActionType =
   | ReducerSetCompletedType
   | ReducerUnsetCompletedType;
 
-function taskGroupReducer(
+function taskMapperReducer(
   state: { [key: string]: TaskModel },
   action: ReducerActionType
 ) {
   const newState = { ...state };
   switch (action.type) {
-    case TaskGroupActions.ADD:
+    case TaskMapperActions.ADD:
       newState[action.payload.taskId] = action.payload;
       break;
 
-    case TaskGroupActions.REMOVE:
+    case TaskMapperActions.REMOVE:
       delete newState[action.payload];
       break;
 
-    case TaskGroupActions.SET:
+    case TaskMapperActions.SET:
       return { ...action.payload };
 
-    case TaskGroupActions.SET_COMPLETED:
+    case TaskMapperActions.SET_COMPLETED:
       newState[action.payload].content.completed = true;
       return newState;
 
-    case TaskGroupActions.UNSET_COMPLETED:
+    case TaskMapperActions.UNSET_COMPLETED:
       newState[action.payload].content.completed = false;
       break;
   }
@@ -75,4 +75,4 @@ function taskGroupReducer(
   return newState;
 }
 
-export default taskGroupReducer;
+export default taskMapperReducer;

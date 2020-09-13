@@ -1,4 +1,4 @@
-/* TaskGroup.tsx -- main group of tasks to be shown
+/* TaskMapper.tsx -- main group of tasks to be shown
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -27,14 +27,14 @@ import Typography from "@material-ui/core/Typography";
 
 import TaskItem from "./TaskItem";
 import TaskModel from "../models/TaskModel";
-import TaskGroupActions from "../models/TaskGroupActions";
-import taskGroupReducer from "../reducers/taskGroupReducer";
+import TaskMapperActions from "../models/TaskMapperActions";
+import taskMapperReducer from "../reducers/taskMapperReducer";
 import getTasks from "../services/getTasks";
 import convertApiToTask from "../models/convertApiToTask";
 
-function TaskGroup({ listId }: { listId: string }) {
+function TaskMapper({ listId }: { listId: string }) {
   const initialTasks: { [key: string]: TaskModel } = {};
-  const [tasks, dispatch] = React.useReducer(taskGroupReducer, initialTasks);
+  const [tasks, dispatch] = React.useReducer(taskMapperReducer, initialTasks);
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
 
@@ -47,7 +47,7 @@ function TaskGroup({ listId }: { listId: string }) {
           ...res.map((item) => ({ [item.id]: convertApiToTask(item) }))
         );
 
-        dispatch({ type: TaskGroupActions.SET, payload: newTasks });
+        dispatch({ type: TaskMapperActions.SET, payload: newTasks });
       })
       .catch((res) => {
         setLoading(false);
@@ -59,15 +59,15 @@ function TaskGroup({ listId }: { listId: string }) {
   const setCompleted = React.useCallback((taskId: string, x: boolean) => {
     dispatch({
       type: x
-        ? TaskGroupActions.SET_COMPLETED
-        : TaskGroupActions.UNSET_COMPLETED,
+        ? TaskMapperActions.SET_COMPLETED
+        : TaskMapperActions.UNSET_COMPLETED,
       payload: taskId,
     });
   }, []);
 
   const deleter = React.useCallback((taskId: string) => {
     dispatch({
-      type: TaskGroupActions.REMOVE,
+      type: TaskMapperActions.REMOVE,
       payload: taskId,
     });
   }, []);
@@ -136,4 +136,4 @@ function TaskGroup({ listId }: { listId: string }) {
   );
 }
 
-export default TaskGroup;
+export default TaskMapper;

@@ -1,4 +1,4 @@
-/* TaskGroupActions.ts -- types of actions for task group reducer
+/* ListMapperActions.ts -- actions associated with task list reducer
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,11 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-enum TaskGroupActions {
+enum ListMapperActions {
   ADD,
   REMOVE,
+  EDIT,
   SET,
-  SET_COMPLETED,
-  UNSET_COMPLETED,
 }
 
-export default TaskGroupActions;
+export default ListMapperActions;

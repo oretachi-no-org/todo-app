@@ -1,4 +1,4 @@
-/* taskListReducer.ts -- reducer for task list
+/* listMapperReducer.ts -- reducer for task list
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -17,22 +17,22 @@
 /* Written by Rishvic Pushpakaran. */
 
 import ListApiModel from "../models/ListApiModel";
-import TaskListActions from "../models/TaskListActions";
+import ListMapperActions from "../models/ListMapperActions";
 
 type ReducerAddType = {
-  type: TaskListActions.ADD;
+  type: ListMapperActions.ADD;
   payload: ListApiModel;
 };
 type ReducerRemoveType = {
-  type: TaskListActions.REMOVE;
+  type: ListMapperActions.REMOVE;
   payload: string;
 };
 type ReducerEditType = {
-  type: TaskListActions.EDIT;
+  type: ListMapperActions.EDIT;
   payload: ListApiModel;
 };
 type ReducerSetType = {
-  type: TaskListActions.SET;
+  type: ListMapperActions.SET;
   payload: { [key: string]: ListApiModel };
 };
 
@@ -42,29 +42,29 @@ type ReducerActionType =
   | ReducerEditType
   | ReducerSetType;
 
-function taskListReducer(
+function listMapperReducer(
   state: { [key: string]: ListApiModel },
   action: ReducerActionType
 ) {
   const newState = { ...state };
 
   switch (action.type) {
-    case TaskListActions.ADD:
+    case ListMapperActions.ADD:
       newState[action.payload.id] = action.payload;
       break;
 
-    case TaskListActions.REMOVE:
+    case ListMapperActions.REMOVE:
       delete newState[action.payload];
       break;
 
-    case TaskListActions.EDIT:
+    case ListMapperActions.EDIT:
       newState[action.payload.id] = action.payload;
       break;
 
-    case TaskListActions.SET:
+    case ListMapperActions.SET:
       return { ...action.payload };
   }
   return newState;
 }
 
-export default taskListReducer;
+export default listMapperReducer;

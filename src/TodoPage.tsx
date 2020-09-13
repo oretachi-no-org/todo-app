@@ -34,8 +34,8 @@ import {
 import { Switch, Route } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
-import TaskGroup from "./components/TaskGroup";
-import TaskList from "./components/TaskList";
+import TaskMapper from "./components/TaskMapper";
+import ListMapper from "./components/ListMapper";
 import TopBar from "./components/TopBar";
 
 const drawerWidth = 220;
@@ -119,7 +119,9 @@ function TodoPage() {
         <Route
           path="/todo/:listId?"
           exact
-          render={({ match }: any) => <TaskList listId={match.params.listId} />}
+          render={({ match }: any) => (
+            <ListMapper listId={match.params.listId} />
+          )}
         />
       </Switch>
     </>
@@ -171,7 +173,7 @@ function TodoPage() {
               <Route
                 path="/todo/:listId"
                 render={({ match }: any) => (
-                  <TaskGroup listId={match.params.listId} />
+                  <TaskMapper listId={match.params.listId} />
                 )}
               />
             </Switch>
