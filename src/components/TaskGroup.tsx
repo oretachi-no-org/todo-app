@@ -24,7 +24,6 @@ import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import { useParams } from "react-router-dom";
 
 import TaskItem from "./TaskItem";
 import TaskModel from "../models/TaskModel";
@@ -33,8 +32,7 @@ import taskGroupReducer from "../reducers/taskGroupReducer";
 import getTasks from "../services/getTasks";
 import convertApiToTask from "../models/convertApiToTask";
 
-function TaskGroup() {
-  const { listId } = useParams();
+function TaskGroup({ listId }: { listId: string }) {
   const initialTasks: { [key: string]: TaskModel } = {};
   const [tasks, dispatch] = React.useReducer(taskGroupReducer, initialTasks);
   const [loading, setLoading] = React.useState(true);
@@ -81,7 +79,7 @@ function TaskGroup() {
     (task) => task.content.completed
   );
 
-  console.log(`List ID for Group is ${listId}`);
+  console.log(tasks);
   return (
     <Container>
       {loading ? (

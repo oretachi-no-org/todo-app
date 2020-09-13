@@ -28,13 +28,13 @@ import Typography from "@material-ui/core/Typography";
 
 import ListIcon from "@material-ui/icons/List";
 
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import TaskListActions from "../models/TaskListActions";
 import taskListReducer from "../reducers/taskListReducer";
 import getLists from "../services/getLists";
 
-function TaskList({ listId }: { listId: string }) {
+function TaskList({ listId }: { listId?: string }) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
   const [lists, dispatch] = React.useReducer(taskListReducer, {});
@@ -57,7 +57,7 @@ function TaskList({ listId }: { listId: string }) {
       });
   }, []);
 
-  console.log(listId);
+  console.log(`list id : '${listId}'`);
 
   return (
     <>
@@ -74,7 +74,7 @@ function TaskList({ listId }: { listId: string }) {
               button
               selected={listItem.id === listId}
               component={RouterLink}
-              to={`/list/${listItem.id}`}
+              to={`/todo/${listItem.id}`}
               key={listItem.id}
             >
               <ListItemIcon>

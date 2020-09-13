@@ -1,4 +1,4 @@
-/* App.test.tsx -- testing main app
+/* TodoPage.test.tsx -- testing main app
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,10 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { createMount, createRender } from "@material-ui/core/test-utils";
-import App from "./App";
+import TodoPage from "./TodoPage";
 import TopBar from "./components/TopBar";
 
-describe("<App />", () => {
+describe("<TodoPage />", () => {
   let mount: typeof import("enzyme").mount;
   let render: typeof import("enzyme").render;
 
@@ -34,7 +34,7 @@ describe("<App />", () => {
   it("renders properly", () => {
     render(
       <MemoryRouter>
-        <App />
+        <TodoPage />
       </MemoryRouter>
     );
   });
@@ -42,7 +42,7 @@ describe("<App />", () => {
   it("contains the topbar", () => {
     const wrapper = mount(
       <MemoryRouter>
-        <App />
+        <TodoPage />
       </MemoryRouter>
     );
     expect(wrapper.find(TopBar)).toHaveLength(1);
