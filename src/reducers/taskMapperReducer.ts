@@ -16,7 +16,7 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import TaskModel from "../models/TaskModel";
+import { TaskModel } from "../models/TaskModel";
 import TaskMapperActions from "../models/TaskMapperActions";
 
 type ReducerAddType = {

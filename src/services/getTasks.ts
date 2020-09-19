@@ -17,7 +17,7 @@
 /* Written by Rishvic Pushpakaran. */
 
 import axios from "axios";
-import TaskApiModel from "../models/TaskApiModel";
+import { TaskApiModel } from "../models/TaskModel";
 
 function getTasks(listId: string): Promise<TaskApiModel[]> {
   return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-/* TaskModel.ts -- model for description of task item
+/* TaskModel.ts -- models for description of task item
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,36 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-type TaskModel = {
-  taskId: string;
-  content: {
-    title: string;
-    completed: boolean;
-    details?: string;
-    deadline?: Date;
-  };
+export type TaskContentModel = {
+  title: string;
+  completed: boolean;
+  details?: string;
+  deadline?: Date;
 };
 
-export default TaskModel;
+export type TaskModel = {
+  taskId: string;
+  content: TaskContentModel;
+};
+
+export type TaskApiModel = {
+  id: string;
+  title: string;
+  completed: boolean;
+  description?: string;
+  dueDate?: Date;
+};
+
+export function convertApiToTask(task: TaskApiModel): TaskModel {
+  const { id, title, completed, description, dueDate } = task;
+
+  return {
+    taskId: id,
+    content: {
+      title: title,
+      completed: completed,
+      details: description,
+      deadline: dueDate,
+    },
+  };
+}

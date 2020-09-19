@@ -23,9 +23,20 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 describe("<TaskItem />", () => {
   let mount: typeof import("enzyme").mount;
+  let mockCompleted: boolean;
+  let mockSetterCompleted: (taskId: string, x: boolean) => void;
+  let mockDeleter: (taskId: string) => void;
 
   beforeAll(() => {
     mount = createMount();
+    mockSetterCompleted = jest.fn((_taskId: string, _x: boolean) => {
+      mockCompleted = !mockCompleted;
+    });
+    mockDeleter = jest.fn((_taskId: string) => {});
+  });
+
+  beforeEach(() => {
+    mockCompleted = false;
   });
 
   it("creates a task item with the title", () => {
@@ -34,7 +45,9 @@ describe("<TaskItem />", () => {
     const wrapper = mount(
       <TaskItem
         taskId="21529dfb-6fde-4de3-b416-b96cb91039ca"
-        content={{ title: title, completed: false }}
+        content={{ title: title, completed: mockCompleted }}
+        setCompleted={mockSetterCompleted}
+        deleter={mockDeleter}
       />
     );
     expect(wrapper).toIncludeText(title);
@@ -50,9 +63,11 @@ describe("<TaskItem />", () => {
         taskId="7a635e4e-d2ee-4b3e-a221-42f18d30d2bd"
         content={{
           title: title,
-          completed: true,
+          completed: mockCompleted,
           details: description,
         }}
+        setCompleted={mockSetterCompleted}
+        deleter={mockDeleter}
       />
     );
     expect(wrapper).toIncludeText(title);

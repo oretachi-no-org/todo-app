@@ -1,4 +1,4 @@
-/* convertApiToTask.ts -- converts TaskApiModel to TaskModel
+/* TaskForm.ts -- schema for adding/editing task data
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,12 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import TaskApiModel from "../models/TaskApiModel";
-import TaskModel from "../models/TaskModel";
+import * as yup from "yup";
 
-function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { id, title, completed, description, dueDate } = task;
+const TaskForm = yup.object().shape({
+  title: yup.string().required(),
+  details: yup.string(),
+  deadline: yup.date(),
+});
 
-  return {
-    taskId: id,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
-}
-
-export default convertApiToTask;
+export default TaskForm;

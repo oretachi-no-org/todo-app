@@ -62,24 +62,8 @@ describe("<TopBar />", () => {
   });
 
   it("contains a MenuIcon when menuTrigger is passed, which on clicking, triggers passed function", () => {
-    const mockTrigger = jest.fn(() => {});
-
-    const wrapper = shallow(<TopBar menuTrigger={mockTrigger} />);
+    const wrapper = shallow(<TopBar menuTrigger={() => {}} />);
     expect(wrapper).toContainReact(<MenuIcon />);
-
-    wrapper.find(IconButton).forEach((iconButton) => {
-      if (iconButton.containsMatchingElement(<MenuIcon />)) {
-        iconButton.simulate("click");
-      }
-    });
-    expect(mockTrigger.mock.calls.length).toBe(1);
-
-    wrapper.find(IconButton).forEach((iconButton) => {
-      if (iconButton.containsMatchingElement(<MenuIcon />)) {
-        iconButton.simulate("click");
-      }
-    });
-    expect(mockTrigger.mock.calls.length).toBe(2);
   });
 
   it("sets the class of app bar with the passed class", () => {

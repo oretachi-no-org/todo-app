@@ -120,7 +120,7 @@ function TodoPage() {
           path="/todo/:listId?"
           exact
           render={({ match }: any) => (
-            <ListMapper listId={match.params.listId} />
+            <ListMapper listId={match.params["listId"]} />
           )}
         />
       </Switch>
@@ -173,7 +173,7 @@ function TodoPage() {
               <Route
                 path="/todo/:listId"
                 render={({ match }: any) => (
-                  <TaskMapper listId={match.params.listId} />
+                  <TaskMapper listId={match.params["listId"]} />
                 )}
               />
             </Switch>

@@ -20,17 +20,16 @@ import React from "react";
 import _ from "lodash";
 
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
+import TaskAdder from "./TaskAdder";
 import TaskItem from "./TaskItem";
-import TaskModel from "../models/TaskModel";
+import { TaskModel, convertApiToTask } from "../models/TaskModel";
 import TaskMapperActions from "../models/TaskMapperActions";
 import taskMapperReducer from "../reducers/taskMapperReducer";
 import getTasks from "../services/getTasks";
-import convertApiToTask from "../models/convertApiToTask";
 
 function TaskMapper({ listId }: { listId: string }) {
   const initialTasks: { [key: string]: TaskModel } = {};
@@ -89,41 +88,42 @@ function TaskMapper({ listId }: { listId: string }) {
         </Typography>
       ) : (
         <>
+          <Box>
+            <TaskAdder
+              adder={(taskContent) =>
+                dispatch({
+                  type: TaskMapperActions.ADD,
+                  payload: {
+                    taskId: "slkdflskdflsdkfsld",
+                    content: taskContent,
+                  },
+                })
+              }
+            />
+          </Box>
           {notCompletedTasks.length > 0 && (
-            <>
-              <Box mt={1} mb={1}>
-                <Typography variant="h5">Remaining</Typography>
-              </Box>
-              <Divider />
-              <Box mt={1} mb={4}>
-                {notCompletedTasks.map((task) => (
-                  <TaskItem
-                    {...task}
-                    setCompleted={setCompleted}
-                    deleter={deleter}
-                    key={task.taskId}
-                  />
-                ))}
-              </Box>
-            </>
+            <Box my={1}>
+              {notCompletedTasks.map((task) => (
+                <TaskItem
+                  {...task}
+                  setCompleted={setCompleted}
+                  deleter={deleter}
+                  key={task.taskId}
+                />
+              ))}
+            </Box>
           )}
           {completedTasks.length > 0 && (
-            <>
-              <Box mt={1} mb={1}>
-                <Typography variant="h5">Completed</Typography>
-              </Box>
-              <Divider />
-              <Box mt={1} mb={1}>
-                {completedTasks.map((task) => (
-                  <TaskItem
-                    {...task}
-                    setCompleted={setCompleted}
-                    deleter={deleter}
-                    key={task.taskId}
-                  />
-                ))}
-              </Box>
-            </>
+            <Box mt={1} mb={1}>
+              {completedTasks.map((task) => (
+                <TaskItem
+                  {...task}
+                  setCompleted={setCompleted}
+                  deleter={deleter}
+                  key={task.taskId}
+                />
+              ))}
+            </Box>
           )}
           {completedTasks.length === 0 && notCompletedTasks.length === 0 && (
             <Typography variant="h4" align="center">

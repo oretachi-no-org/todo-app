@@ -1,4 +1,4 @@
-/* TaskApiModel.ts -- model for data recieved by API
+/* createTask.ts -- service to create new task
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,11 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-type TaskApiModel = {
-  id: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
-};
+import axios from "axios";
+import { TaskContentModel } from "../models/TaskModel";
 
-export default TaskApiModel;
+function createTask(listId: string) {
+  return new Promise((resolve, reject) => {});
+}
+
+export default createTask;

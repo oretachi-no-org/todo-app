@@ -40,7 +40,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TimerIcon from "@material-ui/icons/Timer";
 
-import TaskModel from "../models/TaskModel";
+import { TaskModel } from "../models/TaskModel";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 

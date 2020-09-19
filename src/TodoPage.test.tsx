@@ -18,21 +18,19 @@
 
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { createMount, createRender } from "@material-ui/core/test-utils";
+import { createMount } from "@material-ui/core/test-utils";
 import TodoPage from "./TodoPage";
 import TopBar from "./components/TopBar";
 
 describe("<TodoPage />", () => {
   let mount: typeof import("enzyme").mount;
-  let render: typeof import("enzyme").render;
 
   beforeAll(() => {
     mount = createMount();
-    render = createRender();
   });
 
   it("renders properly", () => {
-    render(
+    mount(
       <MemoryRouter>
         <TodoPage />
       </MemoryRouter>
