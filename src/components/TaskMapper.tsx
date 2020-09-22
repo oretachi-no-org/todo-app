@@ -71,10 +71,10 @@ function TaskMapper({ listId }: { listId: string }) {
     });
   }, []);
 
-  const notCompletedTasks = Object.values(tasks).filter(
+  const notCompletedTasks = _.values(tasks).filter(
     (task) => !task.content.completed
   );
-  const completedTasks = Object.values(tasks).filter(
+  const completedTasks = _.values(tasks).filter(
     (task) => task.content.completed
   );
 
