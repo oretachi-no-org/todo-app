@@ -1,4 +1,4 @@
-/* TaskForm.ts -- schema for adding/editing task data
+/* LoginForm.ts -- schema for login details
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,15 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import { object as yupObject, string as yupString, date as yupDate } from "yup";
+import { object as yupObject, string as yupString } from "yup";
 
-const TaskForm = yupObject().shape({
-  title: yupString().required(),
-  details: yupString(),
-  deadline: yupDate(),
+const LoginForm = yupObject().shape({
+  username: yupString()
+    .required()
+    .min(3)
+    .max(20)
+    .matches(/^[\w.@+-]+$/),
+  password: yupString().required().min(9).max(35),
 });
 
-export default TaskForm;
+export default LoginForm;

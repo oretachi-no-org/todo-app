@@ -1,4 +1,4 @@
-/* TaskForm.ts -- schema for adding/editing task data
+/* themeUtils.ts -- using localStorage to save theme preferences
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,14 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import { object as yupObject, string as yupString, date as yupDate } from "yup";
+export function getSessionTheme(): "dark" | "light" {
+  const myPref = localStorage.getItem("orenoTodoTheme");
+  if (!(myPref === "dark" || myPref === "light")) {
+    localStorage.setItem("orenoTodoTheme", "light");
+  }
+  return myPref === "dark" || myPref === "light" ? myPref : "dark";
+}
 
-const TaskForm = yupObject().shape({
-  title: yupString().required(),
-  details: yupString(),
-  deadline: yupDate(),
-});
-
-export default TaskForm;
+export function setSessionTheme(mode: string) {
+  localStorage.setItem("orenoTodoTheme", mode);
+}

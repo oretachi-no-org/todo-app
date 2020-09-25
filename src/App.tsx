@@ -19,6 +19,8 @@
 import React from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 
+import LoginPage from "./LoginPage";
+import SignUpPage from "./SignUpPage";
 import TodoPage from "./TodoPage";
 
 function App() {
@@ -26,6 +28,12 @@ function App() {
     <Switch>
       <Route path="/todo">
         <TodoPage />
+      </Route>
+      <Route path="/login">
+        <LoginPage />
+      </Route>
+      <Route path="/signup">
+        <SignUpPage />
       </Route>
       <Redirect to="/todo" />
     </Switch>

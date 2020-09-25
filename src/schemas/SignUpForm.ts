@@ -1,4 +1,4 @@
-/* TaskForm.ts -- schema for adding/editing task data
+/* SignUpForm.ts -- schema for sign up form
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -14,14 +14,18 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-/* Written by Rishvic Pushpakaran. */
+import { object as yupObject, string as yupString } from "yup";
 
-import { object as yupObject, string as yupString, date as yupDate } from "yup";
-
-const TaskForm = yupObject().shape({
-  title: yupString().required(),
-  details: yupString(),
-  deadline: yupDate(),
+const SignUpForm = yupObject().shape({
+  email: yupString().required().email(),
+  username: yupString()
+    .required()
+    .min(3)
+    .max(20)
+    .matches(/^[\w.@+-]+$/),
+  firstName: yupString().notRequired().max(25),
+  lastName: yupString().notRequired().max(25),
+  password: yupString().required().min(9).max(35),
 });
 
-export default TaskForm;
+export default SignUpForm;

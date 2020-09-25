@@ -23,7 +23,6 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   createMuiTheme,
   createStyles,
@@ -37,6 +36,7 @@ import FooterCopyright from "./components/FooterCopyright";
 import TaskMapper from "./components/TaskMapper";
 import ListMapper from "./components/ListMapper";
 import TopBar from "./components/TopBar";
+import { getSessionTheme, setSessionTheme } from "./utils/themeUtils";
 
 const drawerWidth = 220;
 
@@ -88,10 +88,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function TodoPage() {
-  const [darkMode, setDarkMode] = React.useState(
-    useMediaQuery("(prefers-color-scheme: dark)")
-  );
+  const [darkMode, setDarkMode] = React.useState(getSessionTheme() === "dark");
   const handleDarkMode = () => {
+    sessionStorage.setItem("darkModePref", darkMode ? "light" : "dark");
+    setSessionTheme(darkMode ? "light" : "dark");
     setDarkMode(!darkMode);
   };
 

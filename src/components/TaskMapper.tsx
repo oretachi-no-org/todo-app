@@ -22,6 +22,7 @@ import _ from "lodash";
 import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import TaskAdder from "./TaskAdder";
@@ -81,7 +82,11 @@ function TaskMapper({ listId }: { listId: string }) {
   return (
     <Container>
       {loading ? (
-        <CircularProgress />
+        <Grid spacing={0} container alignItems="center" justify="center">
+          <Grid item>
+            <CircularProgress color="secondary" />
+          </Grid>
+        </Grid>
       ) : failed ? (
         <Typography color="error" align="center" variant="h6">
           Loading failed
