@@ -154,6 +154,7 @@ function SignUpPage() {
                       required
                       fullWidth
                       label="Email Address"
+                      type="email"
                       error={meta.touched && Boolean(meta.error)}
                       helperText={meta.touched && meta.error}
                       {...field}
