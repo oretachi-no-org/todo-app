@@ -184,6 +184,7 @@ function SignUpPage() {
                     <TextField
                       autoComplete="new-password"
                       variant="outlined"
+                      required
                       fullWidth
                       label="Password"
                       type="password"
