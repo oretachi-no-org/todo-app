@@ -30,7 +30,7 @@ import {
   Theme,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, RouteComponentProps } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
 import TaskMapper from "./components/TaskMapper";
@@ -119,9 +119,11 @@ function TodoPage() {
         <Route
           path="/todo/:listId?"
           exact
-          render={({ match }: any) => (
-            <ListMapper listId={match.params["listId"]} />
-          )}
+          render={(
+            props: RouteComponentProps<{ listId: string | undefined }>
+          ) => {
+            return <ListMapper listId={props.match.params.listId} />;
+          }}
         />
       </Switch>
     </>

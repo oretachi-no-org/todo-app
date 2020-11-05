@@ -1,4 +1,4 @@
-/* App.tsx -- app component
+/* AnonRoute.tsx -- redirects to todo page if already authenticated
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -14,33 +14,30 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-/* Written by Rishvic Pushpakaran. */
+/* Written by Rishvic Pushpakaran.
+   Code derived from https://reactrouter.com/web/example/auth-workflow */
 
-import React from "react";
-import { Switch, Redirect } from "react-router-dom";
+import React, { ReactNode } from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 
-import LoginPage from "./LoginPage";
-import SignUpPage from "./SignUpPage";
-import TodoPage from "./TodoPage";
+import { isAuthenticated } from "../utils/authUtils";
 
-import AnonRoute from "./components/AnonRoute";
-import PrivateRoute from "./components/PrivateRoute";
+type Props = RouteProps & { children: ReactNode };
 
-function App() {
+export default function AnonRoute(props: Props) {
+  const { children, ...rest } = props;
   return (
-    <Switch>
-      <AnonRoute path="/login">
-        <LoginPage />
-      </AnonRoute>
-      <AnonRoute path="/signup">
-        <SignUpPage />
-      </AnonRoute>
-      <PrivateRoute path="/todo">
-        <TodoPage />
-      </PrivateRoute>
-      <Redirect to="/todo" />
-    </Switch>
+    <Route
+      {...rest}
+      render={() => (
+        <>
+          {isAuthenticated() ? (
+            <Redirect to={{ pathname: "/todo" }} />
+          ) : (
+            children
+          )}
+        </>
+      )}
+    />
   );
 }
-
-export default App;

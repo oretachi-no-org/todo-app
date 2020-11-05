@@ -1,4 +1,4 @@
-/* TaskModel.ts -- models for description of task item
+/* loginUser.ts -- service to log-in a user
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,36 +16,25 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-export type TaskContentModel = {
-  title: string;
-  completed: boolean;
-  details?: string;
-  deadline?: Date;
-};
+import axiosInstance from "./axiosInstance";
 
-export type TaskModel = {
-  taskId: string;
-  content: TaskContentModel;
-};
+import { AuthToken, AuthResponseToken } from "../models/AuthModels";
+import { isAuthenticated, setAuthToken } from "../utils/authUtils";
 
-export type TaskApiModel = {
-  taskId: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
-};
-
-export function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { taskId, title, completed, description, dueDate } = task;
-
-  return {
-    taskId: taskId,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
+export default function loginUser(creds: AuthToken): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    if (isAuthenticated()) {
+      reject(new Error("Another user is already logged in"));
+    } else {
+      axiosInstance()
+        .post<AuthResponseToken>("/user/login/", { ...creds })
+        .then((res) => {
+          setAuthToken(res.data.token);
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    }
+  });
 }

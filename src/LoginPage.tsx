@@ -40,10 +40,12 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory, useLocation } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
+import { AuthToken } from "./models/AuthModels";
 import LoginForm from "./schemas/LoginForm";
+import loginUser from "./services/loginUser";
 import { getSessionTheme } from "./utils/themeUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,7 +70,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+type LocationState = {
+  from: string;
+};
+
+type MyStatusType = {
+  logErr: Error | null;
+};
+
 function LoginPage() {
+  const location = useLocation<LocationState | undefined>();
+  const history = useHistory();
+  const { from } = location.state || { from: "/todo" };
+
   const themePref = getSessionTheme();
   const theme = React.useMemo(
     () =>
@@ -83,6 +97,9 @@ function LoginPage() {
 
   const classes = useStyles();
 
+  const initialValues: AuthToken = { username: "", password: "" };
+  const initialStatus: MyStatusType = { logErr: null };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -95,68 +112,85 @@ function LoginPage() {
             Login
           </Typography>
           <Formik
-            initialValues={{
-              username: "",
-              password: "",
-            }}
+            initialValues={initialValues}
+            initialStatus={initialStatus}
             validationSchema={LoginForm}
-            onSubmit={async (values, { setSubmitting }) => {
-              console.log(values);
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(true);
+            onSubmit={async (values, { setSubmitting, setStatus }) => {
+              loginUser(values)
+                .then(() => {
+                  history.replace(from);
+                  setStatus({ logErr: null });
+                  setSubmitting(false);
+                })
+                .catch((err) => {
+                  setStatus({ logErr: err });
+                  setSubmitting(false);
+                });
             }}
             validateOnChange={false}
             validateOnBlur
           >
-            <Form className={classes.form}>
-              <Field id="username" name="username">
-                {({ field, meta }: FieldProps) => (
-                  <TextField
-                    autoComplete="username"
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Username"
-                    error={Boolean(meta.error) && meta.touched}
-                    helperText={meta.touched && meta.error}
-                    {...field}
-                  />
-                )}
-              </Field>
-              <Field id="password" type="password" name="password">
-                {({ field, meta }: FieldProps) => (
-                  <TextField
-                    autoComplete="current-password"
-                    type="password"
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Password"
-                    error={Boolean(meta.error) && meta.touched}
-                    helperText={meta.touched && meta.error}
-                    {...field}
-                  />
-                )}
-              </Field>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link component={RouterLink} to="/signup" variant="body2">
-                    Don't have an account? Sign Up
-                  </Link>
+            {({ status }: { status: MyStatusType }) => (
+              <Form className={classes.form}>
+                <Field id="username" name="username">
+                  {({ field, meta }: FieldProps) => (
+                    <TextField
+                      autoComplete="username"
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Username"
+                      autoFocus
+                      error={Boolean(meta.error) && meta.touched}
+                      helperText={meta.touched && meta.error}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Field id="password" type="password" name="password">
+                  {({ field, meta }: FieldProps) => (
+                    <TextField
+                      autoComplete="current-password"
+                      type="password"
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Password"
+                      error={Boolean(meta.error) && meta.touched}
+                      helperText={meta.touched && meta.error}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container justify="flex-end">
+                  <Grid item>
+                    <Link component={RouterLink} to="/signup" variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Form>
+                {status.logErr && (
+                  <Grid container justify="center">
+                    <Grid item>
+                      <Typography variant="subtitle1" color="error">
+                        Login failed
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                )}
+              </Form>
+            )}
           </Formik>
         </div>
         <Box mt={8}>

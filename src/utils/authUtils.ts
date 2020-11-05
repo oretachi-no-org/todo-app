@@ -1,4 +1,4 @@
-/* TaskModel.ts -- models for description of task item
+/* authUtils.ts -- utilities to set and access authentication details
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,36 +16,24 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-export type TaskContentModel = {
-  title: string;
-  completed: boolean;
-  details?: string;
-  deadline?: Date;
-};
+const key = "onTodoAuth";
 
-export type TaskModel = {
-  taskId: string;
-  content: TaskContentModel;
-};
+export function getAuthToken() {
+  return localStorage.getItem(key);
+}
 
-export type TaskApiModel = {
-  taskId: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
-};
+export function isAuthenticated() {
+  return Boolean(getAuthToken());
+}
 
-export function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { taskId, title, completed, description, dueDate } = task;
+export function setAuthToken(token: string) {
+  if (isAuthenticated()) {
+    throw new Error("Another user is already logged in");
+  } else {
+    localStorage.setItem(key, token);
+  }
+}
 
-  return {
-    taskId: taskId,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
+export function clearAuthToken() {
+  localStorage.removeItem(key);
 }

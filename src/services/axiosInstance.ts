@@ -1,4 +1,4 @@
-/* TaskModel.ts -- models for description of task item
+/* axiosInstance.ts -- an instance of axios to be used
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,36 +16,15 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-export type TaskContentModel = {
-  title: string;
-  completed: boolean;
-  details?: string;
-  deadline?: Date;
-};
+import axios from "axios";
+import { getAuthToken, isAuthenticated } from "../utils/authUtils";
 
-export type TaskModel = {
-  taskId: string;
-  content: TaskContentModel;
-};
-
-export type TaskApiModel = {
-  taskId: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
-};
-
-export function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { taskId, title, completed, description, dueDate } = task;
-
-  return {
-    taskId: taskId,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
+export default function axiosInstance() {
+  return axios.create({
+    baseURL: "/api",
+    timeout: 1000,
+    headers: isAuthenticated()
+      ? { Authorization: `Token ${getAuthToken()}` }
+      : undefined,
+  });
 }

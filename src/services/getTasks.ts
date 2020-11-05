@@ -16,18 +16,18 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import axios from "axios";
 import { TaskApiModel } from "../models/TaskModel";
+import axiosInstance from "./axiosInstance";
 
 function getTasks(listId: string): Promise<TaskApiModel[]> {
   return new Promise((resolve, reject) => {
-    axios
+    axiosInstance()
       .get<TaskApiModel[]>("/task/all")
       .then((res) => {
         resolve(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Couldn't GET tasks:", err);
         reject(err);
       });
   });

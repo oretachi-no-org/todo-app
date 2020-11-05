@@ -17,7 +17,7 @@
 /* Written by Rishvic Pushpakaran. */
 
 type ListApiModel = {
-  id: string;
+  listId: string;
   name: string;
 };
 

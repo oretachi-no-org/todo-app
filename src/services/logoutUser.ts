@@ -1,4 +1,4 @@
-/* TaskModel.ts -- models for description of task item
+/* logoutUser.ts -- service to log-out user
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -14,38 +14,21 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-/* Written by Rishvic Pushpakaran. */
+import axiosInstance from "./axiosInstance";
 
-export type TaskContentModel = {
-  title: string;
-  completed: boolean;
-  details?: string;
-  deadline?: Date;
-};
+import { clearAuthToken } from "../utils/authUtils";
 
-export type TaskModel = {
-  taskId: string;
-  content: TaskContentModel;
-};
-
-export type TaskApiModel = {
-  taskId: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
-};
-
-export function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { taskId, title, completed, description, dueDate } = task;
-
-  return {
-    taskId: taskId,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
+export default function logoutUser(): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    axiosInstance()
+      .delete("/user/logout/")
+      .then(() => {
+        clearAuthToken();
+        resolve();
+      })
+      .catch((err) => {
+        console.error("Error DELETE failed:", err);
+        reject(err);
+      });
+  });
 }

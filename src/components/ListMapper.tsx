@@ -45,15 +45,15 @@ function ListMapper({ listId }: { listId?: string }) {
         setLoading(false);
         const newLists = _.assign(
           {},
-          ...res.map((listItem) => ({ [listItem.id]: listItem }))
+          ...res.map((listItem) => ({ [listItem.listId]: listItem }))
         );
 
         dispatch({ type: ListMapperActions.SET, payload: newLists });
       })
-      .catch((res) => {
+      .catch((err) => {
         setLoading(false);
         setFailed(true);
-        console.log(`Got Error while trying to get lists: ${res}`);
+        console.log("Got error while trying to get lists:", err);
       });
   }, []);
 
@@ -70,10 +70,10 @@ function ListMapper({ listId }: { listId?: string }) {
           {_.values(lists).map((listItem) => (
             <ListItem
               button
-              selected={listItem.id === listId}
+              selected={listItem.listId === listId}
               component={RouterLink}
-              to={`/todo/${listItem.id}`}
-              key={listItem.id}
+              to={`/todo/${listItem.listId}`}
+              key={listItem.listId}
             >
               <ListItemIcon>
                 <ListIcon />

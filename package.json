@@ -70,5 +70,5 @@
     "trailingComma": "es5",
     "endOfLine": "lf"
   },
-  "proxy": "http://192.168.1.199:8080"
+  "proxy": "http://192.168.1.73:8000"
 }

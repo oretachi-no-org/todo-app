@@ -1,4 +1,4 @@
-/* TaskModel.ts -- models for description of task item
+/* AuthToken.ts -- models relating to authentication
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -14,38 +14,19 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-/* Written by Rishvic Pushpakaran. */
-
-export type TaskContentModel = {
-  title: string;
-  completed: boolean;
-  details?: string;
-  deadline?: Date;
+export type AuthToken = {
+  username: string;
+  password: string;
 };
 
-export type TaskModel = {
-  taskId: string;
-  content: TaskContentModel;
+export type AuthResponseToken = {
+  token: string;
 };
 
-export type TaskApiModel = {
-  taskId: string;
-  title: string;
-  completed: boolean;
-  description?: string;
-  dueDate?: Date;
+export type UserAccount = {
+  email: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  password: string;
 };
-
-export function convertApiToTask(task: TaskApiModel): TaskModel {
-  const { taskId, title, completed, description, dueDate } = task;
-
-  return {
-    taskId: taskId,
-    content: {
-      title: title,
-      completed: completed,
-      details: description,
-      deadline: dueDate,
-    },
-  };
-}

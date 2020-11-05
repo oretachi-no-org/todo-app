@@ -50,7 +50,7 @@ function listMapperReducer(
 
   switch (action.type) {
     case ListMapperActions.ADD:
-      newState[action.payload.id] = action.payload;
+      newState[action.payload.listId] = action.payload;
       break;
 
     case ListMapperActions.REMOVE:
@@ -58,7 +58,7 @@ function listMapperReducer(
       break;
 
     case ListMapperActions.EDIT:
-      newState[action.payload.id] = action.payload;
+      newState[action.payload.listId] = action.payload;
       break;
 
     case ListMapperActions.SET:

@@ -44,15 +44,15 @@ function TaskMapper({ listId }: { listId: string }) {
         setLoading(false);
         const newTasks = _.assign(
           {},
-          ...res.map((item) => ({ [item.id]: convertApiToTask(item) }))
+          ...res.map((item) => ({ [item.taskId]: convertApiToTask(item) }))
         );
 
         dispatch({ type: TaskMapperActions.SET, payload: newTasks });
       })
-      .catch((res) => {
+      .catch((err) => {
         setLoading(false);
         setFailed(true);
-        console.log(`Got Error while trying to get tasks: ${res}`);
+        console.error("Got error while trying to get tasks:", err);
       });
   }, [listId]);
 

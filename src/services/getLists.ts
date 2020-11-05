@@ -16,25 +16,20 @@
 
 /* Written by Rishvic Pushpakaran */
 
-//import axios from "axios";
+import axiosInstance from "./axiosInstance";
 import ListApiModel from "../models/ListApiModel";
 
 function getLists(): Promise<ListApiModel[]> {
-  return new Promise((resolve, _reject) => {
-    //    axios
-    //      .get<ListApiModel[]>("/list")
-    //      .then((res) => {
-    //        resolve(res.data);
-    //      })
-    //      .catch((res) => {
-    //        console.log(res);
-    //        _reject(res);
-    //      });
-    resolve([
-      { id: "857ed483-ef6b-4cfd-86b2-53e852debc15", name: "List Numero Uno" },
-      { id: "5934e912-4650-476a-8c9a-1b4dd2cb0119", name: "Dos, Tres.." },
-      { id: "1e3c7694-c1ae-41ea-9c48-d6278158950a", name: "Swimming" },
-    ]);
+  return new Promise((resolve, reject) => {
+    axiosInstance()
+      .get<ListApiModel[]>("/todo/lists/")
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((res) => {
+        console.error("Couldn't GET lists:", res);
+        reject(res);
+      });
   });
 }
 

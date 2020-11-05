@@ -17,19 +17,26 @@
 /* Written by Rishvic Pushpakaran. */
 
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
+
+import logoutUser from "../services/logoutUser";
+import { isAuthenticated } from "../utils/authUtils";
 
 type TopBarClasses = {
   appBar?: string;
@@ -45,6 +52,16 @@ type TopBarProps = {
 function TopBar(props: TopBarProps) {
   const { menuTrigger, themeTrigger, classes } = props;
   const theme = useTheme();
+  const history = useHistory();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
@@ -100,6 +117,39 @@ function TopBar(props: TopBarProps) {
                 )}
               </IconButton>
             </Tooltip>
+          </Box>
+        )}
+        {isAuthenticated && (
+          <Box>
+            <IconButton
+              color="inherit"
+              aria-label="account more"
+              aria-controls="account-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <AccountCircleIcon />
+            </IconButton>
+            <Menu
+              id="account-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  logoutUser()
+                    .then(() => {
+                      handleClose();
+                      history.push("/login");
+                    })
+                    .catch((err) => console.error("Logout Failed:", err));
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
           </Box>
         )}
       </Toolbar>
