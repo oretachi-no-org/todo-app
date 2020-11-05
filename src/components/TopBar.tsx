@@ -28,6 +28,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 
+import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
+
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
@@ -36,7 +38,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import TodoIcon from "./TodoIcon";
 
 import logoutUser from "../services/logoutUser";
-import { isAuthenticated } from "../utils/authUtils";
 
 type TopBarClasses = {
   appBar?: string;
@@ -53,15 +54,6 @@ function TopBar(props: TopBarProps) {
   const { menuTrigger, themeTrigger, classes } = props;
   const theme = useTheme();
   const history = useHistory();
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <AppBar
@@ -119,39 +111,35 @@ function TopBar(props: TopBarProps) {
             </Tooltip>
           </Box>
         )}
-        {isAuthenticated && (
-          <Box>
-            <IconButton
-              color="inherit"
-              aria-label="account more"
-              aria-controls="account-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <AccountCircleIcon />
-            </IconButton>
-            <Menu
-              id="account-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={() => {
-                  logoutUser()
-                    .then(() => {
-                      handleClose();
-                      history.push("/login");
-                    })
-                    .catch((err) => console.error("Logout Failed:", err));
-                }}
-              >
-                Logout
-              </MenuItem>
-            </Menu>
-          </Box>
-        )}
+        <Box>
+          <PopupState variant="popover" popupId="account-menu">
+            {(popupState) => (
+              <>
+                <IconButton
+                  color="inherit"
+                  aria-label="account more"
+                  {...bindTrigger(popupState)}
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+                <Menu {...bindMenu(popupState)}>
+                  <MenuItem
+                    onClick={() => {
+                      logoutUser()
+                        .then(() => {
+                          popupState.close();
+                          history.push("/login");
+                        })
+                        .catch((err) => console.error("Logout Failed:", err));
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </PopupState>
+        </Box>
       </Toolbar>
     </AppBar>
   );

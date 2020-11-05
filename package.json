@@ -25,6 +25,7 @@
     "axios": "^0.20.0",
     "formik": "^2.1.5",
     "lodash": "^4.17.20",
+    "material-ui-popup-state": "^1.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.5",

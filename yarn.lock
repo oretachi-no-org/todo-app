@@ -1396,6 +1396,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.1.5":
+  version: 7.12.5
+  resolution: "@babel/runtime@npm:7.12.5"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 423fb0079353db2faa0dad0cbdf0a90fbc5b511d1f77e5645d1aa0b144a144e24502bb023c12a31d7dca63b6e16ae36afa59992f0404e92e21de211051c361e3
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.10.4":
   version: 7.10.4
   resolution: "@babel/template@npm:7.10.4"
@@ -1820,6 +1829,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f1be6f4564e1c1ec023885b2bf72e6b5cc1354a929d95dcf10640efcdef3763d877b58c1b84f660eaacad4a21478da62e21aaa20b871b0bc40a41a64037c19a2
+  languageName: node
+  linkType: hard
+
+"@material-ui/types@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@material-ui/types@npm:4.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: b5ee63a8967e2209a24ce3ddde103e54e6dd75b0ffbd35307ac90a32807bc322b50ff781c3add447b547f8a0ae90c06e9c87da8278e5cd31f6a2b6f0a06f46b0
   languageName: node
   linkType: hard
 
@@ -4114,6 +4132,13 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: 6411679ad4d2bde81b62ad721d4771d108d5d8ef32805d10ebfa6f1d6bdcfd5cb6dfea5232b85221f079e42691c36cf2db05a5e76b87ba8f6deb37a2c23a4a41
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "classnames@npm:2.2.6"
+  checksum: 490eaeca5931846737ffd33e472a701d268d5b8bc5717dd4cf108a127b06e86e05350e06799abbbe763a0e4c945b4217f6700b7ae00ddc703505682c370e5cf2
   languageName: node
   linkType: hard
 
@@ -9502,6 +9527,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"material-ui-popup-state@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "material-ui-popup-state@npm:1.7.0"
+  dependencies:
+    "@babel/runtime": ^7.1.5
+    "@material-ui/types": ^4.1.1
+    classnames: ^2.2.6
+    prop-types: ^15.0.0
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0
+  checksum: 49b89dc3221ecc7dd01d1997ee7adc43adce079c140d1f9f2eab0ae577580cc1121e45040b2810d3d58801aa716874ff2f633fd63534cf5caf1ff9175cbe570d
+  languageName: node
+  linkType: hard
+
 "md5.js@npm:^1.3.4":
   version: 1.3.5
   resolution: "md5.js@npm:1.3.5"
@@ -10581,6 +10620,7 @@ fsevents@^1.2.7:
     formik: ^2.1.5
     jest-enzyme: ^7.1.2
     lodash: ^4.17.20
+    material-ui-popup-state: ^1.7.0
     prettier: 2.1.1
     react: ^16.13.1
     react-dom: ^16.13.1
@@ -12091,7 +12131,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
