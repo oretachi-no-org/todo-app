@@ -40,10 +40,12 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
 import SignUpForm from "./schemas/SignUpForm";
+import loginUser from "./services/loginUser";
+import signUpUser from "./services/signUpUser";
 import { getSessionTheme } from "./utils/themeUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,6 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function SignUpPage() {
   const classes = useStyles();
+  const history = useHistory();
 
   const themePref = getSessionTheme();
   const theme = React.useMemo(
@@ -104,10 +107,27 @@ function SignUpPage() {
             password: "",
           }}
           validationSchema={SignUpForm}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={(values, { setSubmitting }) => {
             console.log(values);
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
+            signUpUser(values)
+              .then(() => {
+                loginUser({
+                  username: values.username,
+                  password: values.password,
+                })
+                  .then(() => {
+                    setSubmitting(false);
+                    history.push("/todo");
+                  })
+                  .catch((err) => {
+                    console.error("Couldn't login after signup:", err);
+                    setSubmitting(false);
+                  });
+              })
+              .catch((err) => {
+                console.error("Couldn't signup:", err);
+                setSubmitting(false);
+              });
           }}
           validateOnChange={false}
           validateOnBlur

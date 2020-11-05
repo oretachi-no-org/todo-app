@@ -81,7 +81,7 @@ type MyStatusType = {
 function LoginPage() {
   const location = useLocation<LocationState | undefined>();
   const history = useHistory();
-  const { from } = location.state || { from: "/todo" };
+  const { from } = location.state || { from: null };
 
   const themePref = getSessionTheme();
   const theme = React.useMemo(
@@ -115,12 +115,12 @@ function LoginPage() {
             initialValues={initialValues}
             initialStatus={initialStatus}
             validationSchema={LoginForm}
-            onSubmit={async (values, { setSubmitting, setStatus }) => {
+            onSubmit={(values, { setSubmitting, setStatus }) => {
               loginUser(values)
                 .then(() => {
-                  history.replace(from);
                   setStatus({ logErr: null });
                   setSubmitting(false);
+                  from ? history.replace(from) : history.push("/todo");
                 })
                 .catch((err) => {
                   setStatus({ logErr: err });

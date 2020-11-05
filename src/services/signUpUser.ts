@@ -1,4 +1,4 @@
-/* AuthToken.ts -- models relating to authentication
+/* signUpUser.ts -- service to sign up new user
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -14,19 +14,18 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-export type AuthToken = {
-  username: string;
-  password: string;
-};
+import axiosInstance from "./axiosInstance";
+import { UserModel } from "../models/AuthModels";
 
-export type AuthResponseToken = {
-  token: string;
-};
-
-export type UserModel = {
-  email: string;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-  password: string;
-};
+export default function signUpUser(values: UserModel): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    axiosInstance()
+      .post("/user/account/", values)
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
