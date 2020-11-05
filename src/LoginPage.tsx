@@ -128,7 +128,7 @@ function LoginPage() {
                 });
             }}
             validateOnChange={false}
-            validateOnBlur
+            validateOnBlur={false}
           >
             {({ status }: { status: MyStatusType }) => (
               <Form className={classes.form}>

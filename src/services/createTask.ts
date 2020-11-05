@@ -16,11 +16,28 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import axios from "axios";
-import { TaskContentModel } from "../models/TaskModel";
+import axiosInstance from "./axiosInstance";
+import {
+  convertApiToTask,
+  TaskContentModel,
+  TaskApiModel,
+  TaskModel,
+} from "../models/TaskModel";
+import { AxiosResponse } from "axios";
 
-function createTask(listId: string) {
-  return new Promise((resolve, reject) => {});
+function createTask(
+  listId: string,
+  content: TaskContentModel
+): Promise<TaskModel> {
+  return new Promise<TaskModel>((resolve, reject) => {
+    axiosInstance()
+      .post<TaskContentModel, AxiosResponse<TaskApiModel>>(
+        `/todo/lists/${listId}/tasks/`,
+        content
+      )
+      .then((res) => resolve(convertApiToTask(res.data)))
+      .catch((err) => reject(err));
+  });
 }
 
 export default createTask;

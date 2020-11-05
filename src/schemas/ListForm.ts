@@ -1,4 +1,4 @@
-/* getLists.ts -- get all the task lists associated with the user
+/* ListForm.ts -- validation schema for list data
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,8 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import axiosInstance from "./axiosInstance";
-import { ListApiModel } from "../models/ListModel";
+import { object as yupObject, string as yupString } from "yup";
 
-function getLists(): Promise<ListApiModel[]> {
-  return new Promise((resolve, reject) => {
-    axiosInstance()
-      .get<ListApiModel[]>("/todo/lists/")
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((res) => {
-        console.error("Couldn't GET lists:", res);
-        reject(res);
-      });
-  });
-}
-
-export default getLists;
+export default yupObject().shape({
+  name: yupString().required().min(1).max(30),
+});

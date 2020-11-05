@@ -1,4 +1,4 @@
-/* getLists.ts -- get all the task lists associated with the user
+/* ListModel.ts -- models for description of list item
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,11 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import axiosInstance from "./axiosInstance";
-import { ListApiModel } from "../models/ListModel";
+export type ListContentModel = {
+  name: string;
+};
 
-function getLists(): Promise<ListApiModel[]> {
-  return new Promise((resolve, reject) => {
-    axiosInstance()
-      .get<ListApiModel[]>("/todo/lists/")
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((res) => {
-        console.error("Couldn't GET lists:", res);
-        reject(res);
-      });
-  });
-}
-
-export default getLists;
+export type ListApiModel = {
+  listId: string;
+  name: string;
+};

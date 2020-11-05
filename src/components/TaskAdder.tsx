@@ -23,23 +23,33 @@ import TextField from "@material-ui/core/TextField";
 
 import CreateIcon from "@material-ui/icons/Create";
 
-import { TaskContentModel } from "../models/TaskModel";
+import { TaskContentModel, TaskModel } from "../models/TaskModel";
 import TaskForm from "../schemas/TaskForm";
+import createTask from "../services/createTask";
 
 type Props = {
-  adder: (task: TaskContentModel) => void;
+  listId: string;
+  adder: (task: TaskModel) => void;
 };
 
 function TaskAdder(props: Props) {
-  const { adder } = props;
+  const { listId, adder } = props;
   const initialValues: TaskContentModel = { title: "", completed: false };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={TaskForm}
-      onSubmit={async (values, { setSubmitting }) => {
-        adder(values);
-        setSubmitting(false);
+      onSubmit={(values, { setFieldValue, setSubmitting }) => {
+        createTask(listId, values)
+          .then((res) => {
+            adder(res);
+            setFieldValue("title", "", false);
+            setSubmitting(false);
+          })
+          .catch((err) => {
+            console.error("Couldn't add task:", err);
+            setSubmitting(false);
+          });
       }}
       validateOnBlur={false}
       validateOnChange={false}
@@ -48,7 +58,6 @@ function TaskAdder(props: Props) {
         <Field id="title" name="title">
           {({ field, meta }: FieldProps) => (
             <TextField
-              {...field}
               placeholder="Add a new task..."
               fullWidth
               error={Boolean(meta.error) && meta.touched}
@@ -61,6 +70,7 @@ function TaskAdder(props: Props) {
                   </InputAdornment>
                 ),
               }}
+              {...field}
             />
           )}
         </Field>

@@ -130,7 +130,7 @@ function SignUpPage() {
               });
           }}
           validateOnChange={false}
-          validateOnBlur
+          validateOnBlur={false}
         >
           <Form className={classes.form}>
             <Grid container spacing={2}>

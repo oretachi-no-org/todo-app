@@ -16,7 +16,7 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-import ListApiModel from "../models/ListApiModel";
+import { ListApiModel } from "../models/ListModel";
 import ListMapperActions from "../models/ListMapperActions";
 
 type ReducerAddType = {

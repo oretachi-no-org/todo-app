@@ -30,6 +30,7 @@ import ListIcon from "@material-ui/icons/List";
 
 import { Link as RouterLink } from "react-router-dom";
 
+import ListAdder from "./ListAdder";
 import ListMapperActions from "../models/ListMapperActions";
 import listMapperReducer from "../reducers/listMapperReducer";
 import getLists from "../services/getLists";
@@ -67,6 +68,11 @@ function ListMapper({ listId }: { listId?: string }) {
         </Typography>
       ) : (
         <List aria-label="task lists">
+          <ListAdder
+            adder={(list) =>
+              dispatch({ type: ListMapperActions.ADD, payload: list })
+            }
+          />
           {_.values(lists).map((listItem) => (
             <ListItem
               button

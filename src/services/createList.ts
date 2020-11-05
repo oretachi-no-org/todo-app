@@ -1,4 +1,4 @@
-/* ListApiModel.ts -- model for API request to get all lists
+/* createList.ts -- service to create a list
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,20 @@
 
 /* Written by Rishvic Pushpakaran. */
 
-type ListApiModel = {
-  listId: string;
-  name: string;
-};
+import axiosInstance from "./axiosInstance";
+import { ListApiModel, ListContentModel } from "../models/ListModel";
+import { AxiosResponse } from "axios";
 
-export default ListApiModel;
+export default function createList(
+  content: ListContentModel
+): Promise<ListApiModel> {
+  return new Promise<ListApiModel>((resolve, reject) => {
+    axiosInstance()
+      .post<ListContentModel, AxiosResponse<ListApiModel>>(
+        "/todo/lists/",
+        content
+      )
+      .then((res) => resolve(res.data))
+      .catch((err) => reject(err));
+  });
+}

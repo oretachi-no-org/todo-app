@@ -18,10 +18,8 @@
 
 import { object as yupObject, string as yupString, date as yupDate } from "yup";
 
-const TaskForm = yupObject().shape({
+export default yupObject().shape({
   title: yupString().required(),
   details: yupString(),
   deadline: yupDate(),
 });
-
-export default TaskForm;

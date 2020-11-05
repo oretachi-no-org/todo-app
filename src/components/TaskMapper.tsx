@@ -30,6 +30,7 @@ import TaskItem from "./TaskItem";
 import { TaskModel, convertApiToTask } from "../models/TaskModel";
 import TaskMapperActions from "../models/TaskMapperActions";
 import taskMapperReducer from "../reducers/taskMapperReducer";
+import completeTask from "../services/completeTask";
 import getTasks from "../services/getTasks";
 
 function TaskMapper({ listId }: { listId: string }) {
@@ -56,14 +57,21 @@ function TaskMapper({ listId }: { listId: string }) {
       });
   }, [listId]);
 
-  const setCompleted = React.useCallback((taskId: string, x: boolean) => {
-    dispatch({
-      type: x
-        ? TaskMapperActions.SET_COMPLETED
-        : TaskMapperActions.UNSET_COMPLETED,
-      payload: taskId,
-    });
-  }, []);
+  const setCompleted = React.useCallback(
+    (taskId: string, x: boolean) => {
+      completeTask(listId, taskId, x)
+        .then(() =>
+          dispatch({
+            type: x
+              ? TaskMapperActions.SET_COMPLETED
+              : TaskMapperActions.UNSET_COMPLETED,
+            payload: taskId,
+          })
+        )
+        .catch((err) => console.error("Couldn't set complete status:", err));
+    },
+    [listId]
+  );
 
   const deleter = React.useCallback((taskId: string) => {
     dispatch({
@@ -95,13 +103,11 @@ function TaskMapper({ listId }: { listId: string }) {
         <>
           <Box>
             <TaskAdder
-              adder={(taskContent) =>
+              listId={listId}
+              adder={(task) =>
                 dispatch({
                   type: TaskMapperActions.ADD,
-                  payload: {
-                    taskId: "slkdflskdflsdkfsld",
-                    content: taskContent,
-                  },
+                  payload: task,
                 })
               }
             />

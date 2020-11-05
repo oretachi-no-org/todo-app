@@ -1,4 +1,4 @@
-/* getLists.ts -- get all the task lists associated with the user
+/* completeTask.ts -- service to set completion status of task
    Copyright (C) 2020  Rishvic Pushpakaran
 
    This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,16 @@
 /* Written by Rishvic Pushpakaran. */
 
 import axiosInstance from "./axiosInstance";
-import { ListApiModel } from "../models/ListModel";
 
-function getLists(): Promise<ListApiModel[]> {
-  return new Promise((resolve, reject) => {
+export default function completeTask(
+  listId: string,
+  taskId: string,
+  completed: boolean
+): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
     axiosInstance()
-      .get<ListApiModel[]>("/todo/lists/")
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((res) => {
-        console.error("Couldn't GET lists:", res);
-        reject(res);
-      });
+      .patch(`/todo/lists/${listId}/tasks/${taskId}/`, { completed: completed })
+      .then(() => resolve())
+      .catch((err) => reject(err));
   });
 }
-
-export default getLists;

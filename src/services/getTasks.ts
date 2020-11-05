@@ -22,7 +22,7 @@ import axiosInstance from "./axiosInstance";
 function getTasks(listId: string): Promise<TaskApiModel[]> {
   return new Promise((resolve, reject) => {
     axiosInstance()
-      .get<TaskApiModel[]>("/task/all")
+      .get<TaskApiModel[]>(`/todo/lists/${listId}/tasks/`)
       .then((res) => {
         resolve(res.data);
       })
