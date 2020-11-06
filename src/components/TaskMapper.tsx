@@ -136,11 +136,6 @@ function TaskMapper({ listId }: { listId: string }) {
               ))}
             </Box>
           )}
-          {completedTasks.length === 0 && notCompletedTasks.length === 0 && (
-            <Typography variant="h4" align="center">
-              Wow, Such Empty
-            </Typography>
-          )}
         </>
       )}
     </Container>
