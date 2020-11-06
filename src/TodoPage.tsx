@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme: Theme) =>
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
     },
+    appBarPopup: {
+      zIndex: theme.zIndex.drawer + 2,
+    },
     appBarLight: {
       background: "linear-gradient(60deg, #FF6363 30%, #FFBD69 90%)",
     },
@@ -141,6 +144,7 @@ function TodoPage() {
               darkMode ? classes.appBarDark : classes.appBarLight
             }`,
             menuButton: classes.menuButton,
+            popup: classes.appBarPopup,
           }}
         />
         <nav className={classes.drawer} aria-label="task lists">

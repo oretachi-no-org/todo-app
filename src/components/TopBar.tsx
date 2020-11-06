@@ -21,14 +21,17 @@ import { useHistory } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
+import Grow from "@material-ui/core/Grow";
 import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 
-import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
+import PopupState, { bindPopper, bindToggle } from "material-ui-popup-state";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
@@ -42,6 +45,7 @@ import logoutUser from "../services/logoutUser";
 type TopBarClasses = {
   appBar?: string;
   menuButton?: string;
+  popup?: string;
 };
 
 type TopBarProps = {
@@ -112,30 +116,52 @@ function TopBar(props: TopBarProps) {
           </Box>
         )}
         <Box>
-          <PopupState variant="popover" popupId="account-menu">
+          <PopupState variant="popper" popupId="account-menu">
             {(popupState) => (
               <>
                 <IconButton
                   color="inherit"
                   aria-label="account more"
-                  {...bindTrigger(popupState)}
+                  {...bindToggle(popupState)}
                 >
                   <AccountCircleIcon />
                 </IconButton>
-                <Menu {...bindMenu(popupState)}>
-                  <MenuItem
-                    onClick={() => {
-                      logoutUser()
-                        .then(() => {
-                          popupState.close();
-                          history.push("/login");
-                        })
-                        .catch((err) => console.error("Logout Failed:", err));
-                    }}
-                  >
-                    Logout
-                  </MenuItem>
-                </Menu>
+                <Popper
+                  {...bindPopper(popupState)}
+                  transition
+                  className={classes ? classes.popup : undefined}
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom"
+                            ? "center top"
+                            : "center bottom",
+                      }}
+                    >
+                      <Paper>
+                        <MenuList id="account-more-list">
+                          <MenuItem
+                            onClick={() => {
+                              logoutUser()
+                                .then(() => {
+                                  popupState.close();
+                                  history.push("/login");
+                                })
+                                .catch((err) =>
+                                  console.error("Logout Failed:", err)
+                                );
+                            }}
+                          >
+                            Logout
+                          </MenuItem>
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
               </>
             )}
           </PopupState>
