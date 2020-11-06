@@ -20,10 +20,11 @@
    Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { Formik, Form, Field, FieldProps } from "formik";
+import { Formik, FormikProps, Form, Field, FieldProps } from "formik";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -67,6 +68,9 @@ const useStyles = makeStyles((theme: Theme) =>
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    errorBox: {
+      marginTop: theme.spacing(3),
+    },
   })
 );
 
@@ -75,7 +79,7 @@ type LocationState = {
 };
 
 type MyStatusType = {
-  logErr: Error | null;
+  error: any | null;
 };
 
 function LoginPage() {
@@ -98,7 +102,7 @@ function LoginPage() {
   const classes = useStyles();
 
   const initialValues: AuthToken = { username: "", password: "" };
-  const initialStatus: MyStatusType = { logErr: null };
+  const initialStatus: MyStatusType = { error: null };
 
   return (
     <ThemeProvider theme={theme}>
@@ -118,19 +122,19 @@ function LoginPage() {
             onSubmit={(values, { setSubmitting, setStatus }) => {
               loginUser(values)
                 .then(() => {
-                  setStatus({ logErr: null });
+                  setStatus({ error: null });
                   setSubmitting(false);
                   from ? history.replace(from) : history.push("/todo");
                 })
                 .catch((err) => {
-                  setStatus({ logErr: err });
+                  setStatus({ error: err });
                   setSubmitting(false);
                 });
             }}
             validateOnChange={false}
             validateOnBlur={false}
           >
-            {({ status }: { status: MyStatusType }) => (
+            {({ status, isSubmitting }: FormikProps<AuthToken>) => (
               <Form className={classes.form}>
                 <Field id="username" name="username">
                   {({ field, meta }: FieldProps) => (
@@ -145,6 +149,7 @@ function LoginPage() {
                       error={Boolean(meta.error) && meta.touched}
                       helperText={meta.touched && meta.error}
                       {...field}
+                      disabled={isSubmitting}
                     />
                   )}
                 </Field>
@@ -161,6 +166,7 @@ function LoginPage() {
                       error={Boolean(meta.error) && meta.touched}
                       helperText={meta.touched && meta.error}
                       {...field}
+                      disabled={isSubmitting}
                     />
                   )}
                 </Field>
@@ -171,20 +177,33 @@ function LoginPage() {
                   color="primary"
                   className={classes.submit}
                 >
-                  Sign In
+                  {isSubmitting ? (
+                    <CircularProgress color="inherit" size="1.5rem" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
                 <Grid container justify="flex-end">
                   <Grid item>
-                    <Link component={RouterLink} to="/signup" variant="body2">
+                    <Link
+                      component={RouterLink}
+                      to="/signup"
+                      variant="body2"
+                      color="secondary"
+                    >
                       Don't have an account? Sign Up
                     </Link>
                   </Grid>
                 </Grid>
-                {status.logErr && (
+                {status.error && (
                   <Grid container justify="center">
                     <Grid item>
-                      <Typography variant="subtitle1" color="error">
-                        Login failed
+                      <Typography
+                        variant="subtitle2"
+                        color="error"
+                        className={classes.errorBox}
+                      >
+                        {status.error["message"] || "Login Failed"}
                       </Typography>
                     </Grid>
                   </Grid>

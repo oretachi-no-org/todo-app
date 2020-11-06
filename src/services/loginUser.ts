@@ -33,7 +33,14 @@ export default function loginUser(creds: AuthToken): Promise<void> {
           resolve();
         })
         .catch((err) => {
-          reject(err);
+          if (
+            err["response"] &&
+            err.response.status >= 400 &&
+            err.response.status < 500
+          )
+            reject(new Error("Unable to log in with provided credentials."));
+          else
+            reject(new Error("Unable to log in, please try again in a while."));
         });
     }
   });

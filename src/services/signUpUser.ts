@@ -25,7 +25,21 @@ export default function signUpUser(values: UserModel): Promise<void> {
         resolve();
       })
       .catch((err) => {
-        reject(err);
+        if (
+          err["response"] &&
+          err.response.status >= 400 &&
+          err.response.status < 500
+        ) {
+          let err_msg = "Unable to sign up with the provided credentials.";
+          if (err.response.data["nonFieldErrors"])
+            err_msg = err.response.data.nonFieldErrors[0];
+          else if (err.response.data["email"])
+            err_msg = err.response.data.email[0];
+          else if (err.response.data["username"])
+            err_msg = err.response.data.username[0];
+          reject(new Error(err_msg));
+        } else
+          reject(new Error("Unable to sign up, please try again in a while."));
       });
   });
 }

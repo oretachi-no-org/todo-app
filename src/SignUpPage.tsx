@@ -20,10 +20,11 @@
    Written by Rishvic Pushpakaran. */
 
 import React from "react";
-import { Formik, Form, Field, FieldProps } from "formik";
+import { Formik, FormikProps, Form, Field, FieldProps } from "formik";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -43,6 +44,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 
 import FooterCopyright from "./components/FooterCopyright";
+import { UserModel } from "./models/AuthModels";
 import SignUpForm from "./schemas/SignUpForm";
 import loginUser from "./services/loginUser";
 import signUpUser from "./services/signUpUser";
@@ -67,8 +69,15 @@ const useStyles = makeStyles((theme: Theme) =>
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    errorBox: {
+      marginTop: theme.spacing(2),
+    },
   })
 );
+
+type MyStatusType = {
+  error: any | null;
+};
 
 function SignUpPage() {
   const classes = useStyles();
@@ -86,6 +95,18 @@ function SignUpPage() {
     [themePref]
   );
 
+  const initialValues: UserModel = {
+    email: "",
+    username: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+  };
+
+  const initialStatus: MyStatusType = {
+    error: null,
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -99,16 +120,10 @@ function SignUpPage() {
           </Typography>
         </div>
         <Formik
-          initialValues={{
-            email: "",
-            username: "",
-            firstName: "",
-            lastName: "",
-            password: "",
-          }}
+          initialValues={initialValues}
+          initialStatus={initialStatus}
           validationSchema={SignUpForm}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
+          onSubmit={(values, { setSubmitting, setStatus }) => {
             signUpUser(values)
               .then(() => {
                 loginUser({
@@ -116,123 +131,153 @@ function SignUpPage() {
                   password: values.password,
                 })
                   .then(() => {
+                    setStatus({ error: null });
                     setSubmitting(false);
                     history.push("/todo");
                   })
                   .catch((err) => {
-                    console.error("Couldn't login after signup:", err);
+                    setStatus({ error: err });
                     setSubmitting(false);
                   });
               })
               .catch((err) => {
-                console.error("Couldn't signup:", err);
+                setStatus({ error: err });
                 setSubmitting(false);
               });
           }}
           validateOnChange={false}
           validateOnBlur={false}
         >
-          <Form className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Field id="firstName" name="firstName">
-                  {({ field, meta }: FieldProps) => (
-                    <TextField
-                      autoComplete="given-name"
-                      variant="outlined"
-                      fullWidth
-                      label="First Name"
-                      autoFocus
-                      error={meta.touched && Boolean(meta.error)}
-                      helperText={meta.touched && meta.error}
-                      {...field}
-                    />
-                  )}
-                </Field>
+          {({ status, isSubmitting }: FormikProps<UserModel>) => (
+            <Form className={classes.form}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Field id="firstName" name="firstName">
+                    {({ field, meta }: FieldProps) => (
+                      <TextField
+                        autoComplete="given-name"
+                        variant="outlined"
+                        fullWidth
+                        label="First Name"
+                        autoFocus
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Field id="lastName" name="lastName">
+                    {({ field, meta }: FieldProps) => (
+                      <TextField
+                        autoComplete="family-name"
+                        variant="outlined"
+                        fullWidth
+                        label="Last Name"
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+                <Grid item xs={12}>
+                  <Field id="email" name="email" type="email">
+                    {({ field, meta }: FieldProps) => (
+                      <TextField
+                        autoComplete="email"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Email Address"
+                        type="email"
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+                <Grid item xs={12}>
+                  <Field id="username" name="username">
+                    {({ field, meta }: FieldProps) => (
+                      <TextField
+                        autoComplete="username"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Username"
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  </Field>
+                </Grid>
+                <Grid item xs={12}>
+                  <Field id="password" name="password" type="password">
+                    {({ field, meta }: FieldProps) => (
+                      <TextField
+                        autoComplete="new-password"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        label="Password"
+                        type="password"
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  </Field>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field id="lastName" name="lastName">
-                  {({ field, meta }: FieldProps) => (
-                    <TextField
-                      {...field}
-                      autoComplete="family-name"
-                      variant="outlined"
-                      fullWidth
-                      label="Last Name"
-                      error={meta.touched && Boolean(meta.error)}
-                      helperText={meta.touched && meta.error}
-                    />
-                  )}
-                </Field>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                {isSubmitting ? (
+                  <CircularProgress color="inherit" size="1.5rem" />
+                ) : (
+                  "Sign Up"
+                )}
+              </Button>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link
+                    component={RouterLink}
+                    to="/login"
+                    variant="body2"
+                    color="secondary"
+                  >
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Field id="email" name="email" type="email">
-                  {({ field, meta }: FieldProps) => (
-                    <TextField
-                      autoComplete="email"
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Email Address"
-                      type="email"
-                      error={meta.touched && Boolean(meta.error)}
-                      helperText={meta.touched && meta.error}
-                      {...field}
-                    />
-                  )}
-                </Field>
-              </Grid>
-              <Grid item xs={12}>
-                <Field id="username" name="username">
-                  {({ field, meta }: FieldProps) => (
-                    <TextField
-                      autoComplete="username"
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Username"
-                      error={meta.touched && Boolean(meta.error)}
-                      helperText={meta.touched && meta.error}
-                      {...field}
-                    />
-                  )}
-                </Field>
-              </Grid>
-              <Grid item xs={12}>
-                <Field id="password" name="password" type="password">
-                  {({ field, meta }: FieldProps) => (
-                    <TextField
-                      autoComplete="new-password"
-                      variant="outlined"
-                      required
-                      fullWidth
-                      label="Password"
-                      type="password"
-                      error={meta.touched && Boolean(meta.error)}
-                      helperText={meta.touched && meta.error}
-                      {...field}
-                    />
-                  )}
-                </Field>
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link component={RouterLink} to="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Form>
+              {status.error && (
+                <Grid container justify="center">
+                  <Grid item>
+                    <Typography
+                      variant="subtitle2"
+                      color="error"
+                      className={classes.errorBox}
+                    >
+                      {status.error["message"] || "Sign Up Failed"}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
+            </Form>
+          )}
         </Formik>
         <Box mt={5}>
           <FooterCopyright />
