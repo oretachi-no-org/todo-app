@@ -26,9 +26,8 @@ export default function logoutUser(): Promise<void> {
         clearAuthToken();
         resolve();
       })
-      .catch((err) => {
-        console.error("Error DELETE failed:", err);
-        reject(err);
+      .catch(() => {
+        reject(new Error("Logout failed"));
       });
   });
 }
