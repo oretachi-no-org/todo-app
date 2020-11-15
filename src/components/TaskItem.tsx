@@ -126,6 +126,9 @@ function TaskItem(props: Props) {
                   <Checkbox
                     size="small"
                     checked={completed}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
                     onChange={(event) => {
                       setCompleted(taskId, event.target.checked);
                     }}
