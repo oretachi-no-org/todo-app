@@ -4,7 +4,7 @@
     "name": "Rishvic Pushpakaran",
     "email": "rishvic@gmail.com"
   },
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "AGPL-3.0-or-later",
   "description": "Front-end to a simple todo app",
   "repository": "github:oretachi-no-org/todo-app",
