@@ -35,7 +35,12 @@ import ListMapperActions from "../models/ListMapperActions";
 import listMapperReducer from "../reducers/listMapperReducer";
 import getLists from "../services/getLists";
 
-function ListMapper({ listId }: { listId?: string }) {
+type Props = {
+  listId?: string;
+  closeDrawer?: () => void;
+};
+
+function ListMapper({ listId, closeDrawer }: Props) {
   const [loading, setLoading] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
   const [lists, dispatch] = React.useReducer(listMapperReducer, {});
@@ -80,6 +85,7 @@ function ListMapper({ listId }: { listId?: string }) {
               component={RouterLink}
               to={`/todo/${listItem.listId}`}
               key={listItem.listId}
+              onClick={closeDrawer}
             >
               <ListItemIcon>
                 <ListIcon />

@@ -90,6 +90,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+type DrawerContentProps = {
+  closeDrawer?: () => void;
+};
+
 function TodoPage() {
   const [darkMode, setDarkMode] = React.useState(getSessionTheme() === "dark");
   const handleDarkMode = () => {
@@ -114,22 +118,23 @@ function TodoPage() {
     setMobileOpen(!mobileOpen);
   };
 
-  const TempDrawer = () => (
-    <>
-      <div className={classes.toolbar} />
-      <Divider />
-      <Switch>
-        <Route
-          path="/todo/:listId?"
-          exact
-          render={(
-            props: RouteComponentProps<{ listId: string | undefined }>
-          ) => {
-            return <ListMapper listId={props.match.params.listId} />;
-          }}
-        />
-      </Switch>
-    </>
+  const DrawerContent = ({ closeDrawer }: DrawerContentProps) => (
+    <Switch>
+      <Route
+        path="/todo/:listId?"
+        exact
+        render={(
+          props: RouteComponentProps<{ listId: string | undefined }>
+        ) => {
+          return (
+            <ListMapper
+              listId={props.match.params.listId}
+              closeDrawer={closeDrawer}
+            />
+          );
+        }}
+      />
+    </Switch>
   );
 
   return (
@@ -159,7 +164,7 @@ function TodoPage() {
                 keepMounted: true,
               }}
             >
-              <TempDrawer />
+              <DrawerContent closeDrawer={handleDrawerToggle} />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="js">
@@ -168,7 +173,9 @@ function TodoPage() {
               variant="permanent"
               open
             >
-              <TempDrawer />
+              <div className={classes.toolbar} />
+              <Divider />
+              <DrawerContent />
             </Drawer>
           </Hidden>
         </nav>
